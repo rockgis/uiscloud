@@ -18,7 +18,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>appServlet</servlet-name>
-    <url-pattern>*.uis</url-pattern>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>characterEncodingFilter</filter-name>

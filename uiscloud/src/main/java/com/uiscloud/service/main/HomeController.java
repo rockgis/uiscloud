@@ -22,7 +22,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/main.uis", method = RequestMethod.GET)
+	@RequestMapping({ "/main", "/"})
 	public String home(Locale locale, Model model) {
 		
 		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
@@ -32,7 +32,7 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value = "/map.uis", method = RequestMethod.GET)
+	@RequestMapping(value = "/map", method = RequestMethod.GET)
 	public String map(Locale locale, Model model) {
 		
 		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
@@ -42,7 +42,7 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value = "/openmap.uis", method = RequestMethod.GET)
+	@RequestMapping(value = "/openmap", method = RequestMethod.GET)
 	public String openmap(Locale locale, Model model) {
 		
 		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
@@ -51,7 +51,7 @@ public class HomeController {
 		return "/map/openMainF";
 	}
 	
-	@RequestMapping(value = "/basicMap.uis", method = RequestMethod.GET)
+	@RequestMapping(value = "/basicMap", method = RequestMethod.GET)
 	public String basicMap(Locale locale, Model model) {
 		
 		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
@@ -60,7 +60,7 @@ public class HomeController {
 		return "/edu/basicMapF";
 	}
 	
-	@RequestMapping(value = "/otherMap.uis", method = RequestMethod.GET)
+	@RequestMapping(value = "/otherMap", method = RequestMethod.GET)
 	public String otherMap(Locale locale, Model model) {
 		
 		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
