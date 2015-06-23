@@ -12,7 +12,7 @@
 <title>Index Home</title>
 
 <script language="javascript">
-window.location="<c:url value='/main.uis'/>";
+window.location="<c:url value='/main'/>";
 </script>
 </head>
 <body>

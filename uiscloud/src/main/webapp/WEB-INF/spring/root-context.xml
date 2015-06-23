@@ -31,7 +31,7 @@
 
 	<!-- spring data jpa 설정 -->
 	<!-- jpa repository가 위치한 패키지 경로 등록 -->
-	<jpa:repositories base-package="com.uiscloud" entity-manager-factory-ref="entityManagerFactory" />
+	<jpa:repositories base-package="com.uiscloud.service.repository" entity-manager-factory-ref="entityManagerFactory" />
 
 	<!-- 하이버네이트의 SessionFactory 에 상응하는 jpa의 EntityManagerFactory 등록 -->
 	<bean id="entityManagerFactory"
@@ -57,10 +57,6 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
 	</bean>
 	<!-- spring data jpa 설정 끝 -->
-
-
-
-
 
 	<!-- 다국어를 위한 메세지 처리 빈 설정 -->
 	<bean id="messageSource"
