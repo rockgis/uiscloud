@@ -31,7 +31,6 @@ public class HomeController {
 		return "MainF";
 	}
 	
-	
 	@RequestMapping(value = "/map", method = RequestMethod.GET)
 	public String map(Locale locale, Model model) {
 		

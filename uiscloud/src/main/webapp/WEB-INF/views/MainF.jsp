@@ -50,7 +50,7 @@
         <div class="col-md-4">
           <h2>Openalyer 3.2.0 Example</h2>
           <p>Openlyers 3.2.0 기반의 예제 (Openlyers.org Site) </p>
-          <p><a class="btn btn-default" href="/lib/v3.2.0/examples/index.html" role="button">View Example &raquo;</a></p>
+          <p><a class="btn btn-default" href="/ol3Example/exampleList" role="button">View Example &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <h2>Openalyer 3.2.0 Apidoc</h2>
@@ -72,7 +72,6 @@
     </div> <!-- /container -->
 	
 	
-	<script type="text/javascript" src="/webjars/angularjs/1.3.14/angular.min.js"></script>
     <script type="text/javascript" src="/webjars/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="/webjars/bootstrap/3.3.2-1/js/bootstrap.min.js"></script>
 	

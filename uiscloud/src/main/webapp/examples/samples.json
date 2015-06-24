@@ -1,133 +1,133 @@
 [
     {
-        "title": "The map and the view",
+        "title": "지도 보기",
         "samples": [
             {
-                "title": "A basic map",
-                "description": "Show the most basic way to create map",
+                "title": "기본 지도",
+                "description": "기본 지도 생성 예제",
                 "url": "chapter01_01_basic_map.html",
                 "thumbnail": "chapter01_01_basic_map.png"
             },
             {
-                "title": "Moving around",
-                "description": "Demonstrates how to programatically interact with the map",
+                "title": "지도 조작",
+                "description": "지도의 간단한 조작 예제",
                 "url": "chapter01_02_moving_around.html",
                 "thumbnail": "chapter01_02_moving_around.png"
             },
             {
-                "title": "Fit extent",
-                "description": "Focalize the view on a given extent",
+                "title": "지도 영역 조작",
+                "description": "지도 영역 조작 예제",
                 "url": "chapter01_03_fit_extent.html",
                 "thumbnail": "chapter01_03_fit_extent.png"
             },
             {
-                "title": "Animating the view",
-                "description": "Adding nice effect to the view changes",
+                "title": "지도 애니메이션",
+                "description": "뷰 변경에 적용 가능한 애니메이션 예제",
                 "url": "chapter01_04_animating_the_view.html",
                 "thumbnail": "chapter01_04_animating_the_view.png"
             }            
         ]
     },
     {
-        "title": "The layers",
+        "title": "레이어",
         "samples": [
             {
-                "title": "Adding/Removing layers",
-                "description": "Adding and removing layers from the map programmatically",
+                "title": "레이어 추가/삭제",
+                "description": "레이어 추가/삭제 예제",
                 "url": "chapter02_01_adding_removing_layers.html",
                 "thumbnail": "chapter02_01_adding_removing_layers.png"
             },
             {
-                "title": "The layer stack",
-                "description": "Raise and lower layers within the layer stack",
+                "title": "레이어 스택",
+                "description": "레이어 스택 변경 예제",
                 "url": "chapter02_02_layer_stack.html",
                 "thumbnail": "chapter02_02_layer_stack.png"
             },
             {
-                "title": "Layer groups",
-                "description": "Grouping layers for better control",
+                "title": "레이어 그룹",
+                "description": "레이어를 그룹으로 제어",
                 "url": "chapter02_03_layer_groups.html",
                 "thumbnail": "chapter02_03_layer_groups.png"
             },
             {
-                "title": "Image layer",
-                "description": "Adding static images",
+                "title": "이미지 레이어",
+                "description": "이미지 레이어 추가",
                 "url": "chapter02_04_image_layer.html",
                 "thumbnail": "chapter02_04_image_layer.png"
             },
             {
-                "title": "Layers and resolutions",
-                "description": "Visualizing layers depending on resolution",
+                "title": "레이어 해상도",
+                "description": "해상도에 따른 레이어를 시각화",
                 "url": "chapter02_05_layer_resolution.html",
                 "thumbnail": "chapter02_05_layer_resolution.png"
             },
             {
-                "title": "Heatmap Layers",
-                "description": "Create hetmap from vector data",
+                "title": "히트맵 레이어",
+                "description": "벡터 테이터에서 히트맵 만들기",
                 "url": "chapter02_06_heatmap_layer.html",
                 "thumbnail": "chapter02_06_heatmap_layer.png"
             }
         ]
     },
     {
-        "title": "Data source and formats",
+        "title": "데이터와 형식",
         "samples": [
             {
-                "title": "Tile providers",
-                "description": "Some tile providers supported by OpenLayers3",
+                "title": "OpenLayers3 제공 타일",
+                "description": "OpenLayers3 지원되는 타일 제공",
                 "url": "chapter03_01_tile_providers.html",
                 "thumbnail": "chapter03_01_tile_providers.png"
             },
             {
-                "title": "Reading WMS capabilities",
-                "description": "How to read WMS server capabilities",
-                "url": "chapter03_09_wmscapabilities.html"
-            },
-            {
-                "title": "Loading data from a WMS server ",
-                "description": "Accessing a WMS server",
-                "url": "chapter03_05_wmssource.html",
-                "thumbnail": "chapter03_05_wmssource.png"
-            },
-            {
-                "title": "WMTS source",
-                "description": "Requesting a WMTS server",
+                "title": "WMTS 서버",
+                "description": "WMTS 서버 요청 방법",
                 "url": "chapter03_02_wmts_source.html",
                 "thumbnail": "chapter03_02_wmts_source.png"
             },
             {
-                "title": "Vector source",
-                "description": "Initialize a vector source using different ways",
-                "url": "chapter03_03_vector_source.html",
-                "thumbnail": "chapter03_03_vector_source.png"
-            },
-            {
-                "title": "Working with ImageCanvas",
-                "description": "Rendering information on a HTML5 canvas element",
+                "title": "이미지캔버스 작업",
+                "description": "HTML5의 canvas 속성 렌더링",
                 "url": "chapter03_04_imagecanvas.html",
                 "thumbnail": "chapter03_04_imagecanvas.png"
             },
             {
-                "title": "Rendering vector as raster",
-                "description": "Rendering vector information as raster to improve performance",
+                "title": "벡터 소스",
+                "description": "다른 방법을 사용하여 벡터 소스 초기화",
+                "url": "chapter03_03_vector_source.html",
+                "thumbnail": "chapter03_03_vector_source.png"
+            },
+            {
+                "title": "WMS 서버 데이터 요청 ",
+                "description": "WMS 서버 접근",
+                "url": "chapter03_05_wmssource.html",
+                "thumbnail": "chapter03_05_wmssource.png"
+            },
+            {
+                "title": "벡터를 래스터로 렌더링",
+                "description": "성능을 향상을 위한 벡터를 래스터로 렌더링",
                 "url": "chapter03_06_vector_as_raster.html",
                 "thumbnail": "chapter03_06_vector_as_raster.png"
             },
             {
-                "title": "Requesting a WFS server",
-                "description": "How to access data on a WFS server",
+                "title": "WFS 서버 데이터 요청",
+                "description": "WFS 서버 접근",
                 "url": "chapter03_07_query_wfs.html",
                 "thumbnail": "chapter03_07_query_wfs.png"
             },
             {
-                "title": "Working with loading strategies",
-                "description": "How to access data on a WFS server",
+                "title": "로딩 전략에 대한 작업",
+                "description": "WFS 서버의 데이터에 엑세스 하는 방법",
                 "url": "chapter03_08_loading_strategies.html",
                 "thumbnail": "chapter03_08_loading_strategies.png"
             },
             {
-                "title": "Reading and writing features",
-                "description": "Show how to read and write features to a given data format",
+                "title": "WMS 기능 읽기",
+                "description": "WMS서버의 기능 읽기",
+                "url": "chapter03_09_wmscapabilities.html"
+            },
+            {
+                "title": "features 입력/삭제",
+                "description": "주어진 데이터 형식으로 features 입력/삭제",
                 "url": "chapter03_10_reading_writing_features.html",
                 "thumbnail": "chapter03_10_reading_writing_features.png"
             }
