@@ -60,7 +60,7 @@
         <div class="col-md-4">
           <h2><spring:message code="test.test" /></h2>
           <p></p>
-          <p><a class="btn btn-default" href="/openmap.uis" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/webjars/templates/sample/prototype.html" role="button">View details &raquo;</a></p>
         </div>
       </div>
 
