@@ -63,7 +63,7 @@
             },
             {
                 "title": "히트맵 레이어",
-                "description": "벡터 테이터에서 히트맵 만들기",
+                "description": "벡터 테이터로 히트맵 만들기",
                 "url": "chapter02_06_heatmap_layer.html",
                 "thumbnail": "chapter02_06_heatmap_layer.png"
             }
@@ -134,68 +134,68 @@
         ]
     },
     {
-        "title": "Vector layers",
+        "title": "벡터 레이어",
         "samples": [
             {
-                "title": "Playing with geometries",
-                "description": "Demonstrate how we can create geometries programmatically",
+                "title": "공간 정보",
+                "description": "공간 정보 생성 방법",
                 "url": "chapter04_01_geometries.html"
             },
             {
-                "title": "Creating features programmatically",
-                "description": "This example shows how we can create features programmatically without the need of a source class",
+                "title": "features 생성",
+                "description": "features 생성 방법",
                 "url": "chapter04_02_creating_features.html",
                 "thumbnail": "chapter04_02_creating_features.png"
             },
             {
-                "title": "Styling",
-                "description": "Basic styling of fill and stroke",
+                "title": "스타일",
+                "description": "기본 스타일",
                 "url": "chapter04_03_styling.html",
                 "thumbnail": "chapter04_03_styling.png"
             },
             {
-                "title": "Icon styling",
-                "description": "Show the use of images to style features",
+                "title": "아이콘 스타일링",
+                "description": "이미지를 features 스타일 적용",
                 "url": "chapter04_05_icons.html",
                 "thumbnail": "chapter04_05_icons.png"
             },
             {
-                "title": "Text within styles",
-                "description": "Using text within features style",
+                "title": "스타일 내의 텍스트",
+                "description": "features 스타일 내에서의 텍스트 기능 사용",
                 "url": "chapter04_06_text_style.html",
                 "thumbnail": "chapter04_06_text_style.png"
             },
             {
-                "title": "Working with style functions",
-                "description": "Style features through style functions",
+                "title": "스타일 함수 작업",
+                "description": "스타일의 함수를 통해 스타일 제어",
                 "url": "chapter04_07_style_functions.html",
                 "thumbnail": "chapter04_07_style_functions.png"
             },
             {
-                "title": "Managing features",
-                "description": "Describe how to handle features programmatically",
+                "title": "features 제어",
+                "description": "features 제어",
                 "url": "chapter04_04_managing_features.html",
                 "thumbnail": "chapter04_04_managing_features.png"
             }
         ]
     },
     {
-        "title": "Events, listeners and properties",
+        "title": "이벤트의 리스너와 속성",
         "samples": [
             {
-                "title": "Events, listeners and properties",
-                "description": "See the basics of events, listeners and properties in action",
+                "title": "이벤트의 리스너와 속성",
+                "description": "이벤트의 기본 리스너와 속성",
                 "url": "chapter05_01_events.html"
             },
             {
-                "title": "Synchronizing two map views",
-                "description": "See how we can synchronize two map view to show the same location and resolution",
+                "title": "지도 동기화",
+                "description": "두 개의 지도의 위치와 해상도를 동기화",
                 "url": "chapter05_02_synchronize_maps.html",
                 "thumbnail": "chapter05_02_synchronize_maps.png"
             },
             {
-                "title": "Showing the mouse location",
-                "description": "Get and show the current mouse location",
+                "title": "마우스의 위치 표시",
+                "description": "현재 마우스의 좌표 표시",
                 "url": "chapter05_03_mouse_position.html",
                 "thumbnail": "chapter05_03_mouse_position.png"
             },
@@ -206,8 +206,8 @@
                 "thumbnail": "chapter05_04_changes_vector_data.png"
             },
             {
-                "title": "Styling features under the pointer",
-                "description": "Detects pointer move events and retrieves current features.",
+                "title": "마우스 포인터의 features 스타일링",
+                "description": "포인터 이동 이벤트를 감지, 현재 features 검색",
                 "url": "chapter05_05_features_under_pointer.html",
                 "thumbnail": "chapter05_05_features_under_pointer.png"
             }
