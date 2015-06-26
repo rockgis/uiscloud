@@ -214,70 +214,70 @@
         ]
     },
     {
-        "title": "Overlays",
+        "title": "오버레이",
         "samples": [
             {
-                "title": "A basic overlay",
-                "description": "Demonstrates how to create a basic overlay from a HTML element.",
+                "title": "기본 오버레이",
+                "description": "HTML 요소를 사용한 기본 오버레이",
                 "url": "chapter06_01_basic_overlay.html",
                 "thumbnail": "chapter06_01_basic_overlay.png"
             },
             {
-                "title": "Using overlays as markers",
-                "description": "Shows how we can use overlays to implement markers.",
+                "title": "마커 구현",
+                "description": "오버레이를 활용한 마커 구현.",
                 "url": "chapter06_02_markers_overlays.html",
                 "thumbnail": "chapter06_02_markers_overlays.png"
             }
         ]
     },
     {
-        "title": "Controls and Interactions",
+        "title": "컨트롤과 인터렉션",
         "samples": [
             {
-                "title": "Static map",
-                "description": "A map whose view can not by modified.",
+                "title": "정적 지도",
+                "description": "정적 지도 생성",
                 "url": "chapter07_02_static_map.html",
                 "thumbnail": "chapter07_02_static_map.png"
             },
             {
-                "title": "Playing with controls",
-                "description": "Shows how to use most of the controls offered by OpenLayers3.",
+                "title": "컨트롤 실행",
+                "description": "OpenLayers3에서 제공하는 기본 컨트롤",
                 "url": "chapter07_03_playing_controls.html",
                 "thumbnail": "chapter07_03_playing_controls.png"
             },
             {
-                "title": "Custom control",
-                "description": "Demonstrates how we can create a custom control.",
+                "title": "사용자 정의 컨트롤",
+                "description": "사용자 정의 컨트롤 생성 방법",
                 "url": "chapter07_01_custom_control.html",
                 "thumbnail": "chapter07_01_custom_control.png"
             },
             {
-                "title": "Feature overlay",
-                "description": "Basic example on how to create a feature overlay",
+                "title": "Feature 오버레이",
+                "description": "기본 feature 오버레이 생성",
                 "url": "chapter07_04_featureoverlay.html",
                 "thumbnail": "chapter07_04_featureoverlay.png"
             },
             {
-                "title": "Managing interactions",
-                "description": "Sample on how to add/remove and activate interactions",
+                "title": "인터렉션 관리",
+                "description": "인터렉션 제어 방법",
                 "url": "chapter07_05_managing_interactions.html",
                 "thumbnail": "chapter07_05_managing_interactions.png"
             },
             {
-                "title": "Selecting features",
-                "description": "Demonstrates how to use and configure the select interaction",
+                "title": "features 선택",
+                "description": "선택 인터렉션을 사용한 features선택",
                 "url": "chapter07_06_selecting_features.html",
                 "thumbnail": "chapter07_06_selecting_features.png"
             },
             {
-                "title": "Editing features",
-                "description": "Basic vector data editor",
+                "title": "features 편집",
+                "description": "벡터데이터 기본 편집",
                 "url": "chapter07_07_editing_features.html",
                 "thumbnail": "chapter07_07_editing_features.png"
             },
             {
-                "title": "Selecting features within a vector box",
-                "description": "How to select features that intersects with a vector box",
+                "title": "드래그로 features 선택",
+                "description": "벡터 박스와 교차하는 features 선택",
                 "url": "chapter07_08_selecting_features_box.html",
                 "thumbnail": "chapter07_08_selecting_features_box.png"
             }
