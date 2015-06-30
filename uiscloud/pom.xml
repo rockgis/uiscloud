@@ -355,4 +355,32 @@
 		</plugins>
 	</build>
 	<artifactId>service</artifactId>
+	
+	<repositories>
+        <repository>
+            <id>nexus-deployment</id>
+            <name>Nexus Repository</name>
+            <url>http://192.168.0.112:7070/nexus/content/groups/public/</url>
+            <releases>
+				<enabled>true</enabled>
+			</releases>
+            <snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+        </repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+            <id>nexus-deployment</id>
+            <name>Nexus Repository</name>
+            <url>http://192.168.0.112:7070/nexus/content/groups/public/</url>
+            <releases>
+				<enabled>true</enabled>
+			</releases>
+            <snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </project>
