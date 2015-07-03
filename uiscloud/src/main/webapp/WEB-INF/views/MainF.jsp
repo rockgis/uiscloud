@@ -38,9 +38,9 @@
     <div class="jumbotron">
       <div class="container">
         <h1>UISCLOUD Map API</h1>
-        <p>Open Layer 3.2.0 기반의 Map FrameWork
+        <p>Open Layer 3.X 기반의 Map FrameWork
         </p>
-        <p><a class="btn btn-primary btn-lg" href="/map.uis" role="button">Start &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" href="/map" role="button">Start &raquo;</a></p>
       </div>
     </div>
 
@@ -48,9 +48,9 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Openalyer 3.2.0 Example</h2>
-          <p>Openlyers 3.2.0 기반의 예제 (Openlyers.org Site) </p>
-          <p><a class="btn btn-default" href="/ol3Example/exampleList" role="button">View Example &raquo;</a></p>
+          <h2>Openalyer 3.X Example</h2>
+          <p>Openlyers 3.X 기반의 예제 </p>
+          <p><a class="btn btn-default" href="/examples/" role="button">View Example &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <h2>Openalyer 3.2.0 Apidoc</h2>
@@ -69,7 +69,8 @@
       <footer>
         <p>&copy; Company 2015 UISCLOUD Co., Ltd</p>
       </footer>
-    </div> <!-- /container -->
+    </div> 
+    <!-- /container -->
 	
 	
     <script type="text/javascript" src="/webjars/jquery/2.1.3/jquery.min.js"></script>
