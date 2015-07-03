@@ -319,11 +319,7 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-		<dependency>
-			<groupId>com.uiscloud</groupId>
-			<artifactId>uisgeolib</artifactId>
-			<version>1.0</version>
-		</dependency>
+
 
 
 	</dependencies>
