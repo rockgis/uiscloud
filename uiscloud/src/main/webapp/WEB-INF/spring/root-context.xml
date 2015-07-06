@@ -9,7 +9,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool-4.2.xsd">
 
 
 	<tx:annotation-driven />
@@ -31,7 +32,7 @@
 
 	<!-- spring data jpa 설정 -->
 	<!-- jpa repository가 위치한 패키지 경로 등록 -->
-	<jpa:repositories base-package="com.uiscloud.service.repository" entity-manager-factory-ref="entityManagerFactory" />
+	<jpa:repositories base-package="com.uiscloud" entity-manager-factory-ref="entityManagerFactory" />
 
 	<!-- 하이버네이트의 SessionFactory 에 상응하는 jpa의 EntityManagerFactory 등록 -->
 	<bean id="entityManagerFactory"
