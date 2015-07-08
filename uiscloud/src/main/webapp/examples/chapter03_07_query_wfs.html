@@ -45,96 +45,62 @@
 
         </div>
 
+      
+        <script src="../lib/proj4js/proj4.js"></script>
         <script src="scripts/d41d8cd9.vendor.js"></script>
-
         <script src="scripts/d41d8cd9.plugins.js"></script>
-
         <!-- OpenLayers -->
-        <script src="http://openlayers.org/en/v3.4.0/build/ol.js" type="text/javascript"></script>
+        <script src="http://openlayers.org/en/v3.4.0/build/ol-debug.js" type="text/javascript"></script>
+        <script src="tilegrid/vworldtilegrid.js"></script>
+        <script src="source/vworldmapssource.js"></script>
 
 
         <script id="code">
-            // Tiled layer
-            var osmLayer = new ol.layer.Tile({
-                source: new ol.source.OSM()
-            });
 
-            // Source retrieving WFS data in GML format using AJAX
-            var vectorSource = new ol.source.ServerVector({
-                format: new ol.format.WFS({
-                    featureNS: 'http://openstreemap.org',
-                    featureType: 'water_areas'
-                }),
-                loader: function(extent, resolution, projection) {
-                    var url = 'http://demo.opengeo.org/geoserver/wfs?'+
-                        'service=WFS&request=GetFeature&'+
-                        'version=1.1.0&typename=osm:water_areas&'+
-                        'srsname=EPSG:3857&'+
-                        'bbox=' + extent.join(',');
+            
+        	var vectorSourceJsonp = new ol.source.Vector({
+      		  loader: function(extent, resolution, projection) {
+      		    var url = 'http://211.58.18.254:8180/sktbigis/wfs?service=WFS&' +
+      		        'version=1.1.0&request=GetFeature&typename=sktbigis:' + 'bd_object_cable' + '&' +
+      		        'outputFormat=application/json' + '&' +
+                    'srs=EPSG:3857' +
+                    '&bbox=' + extent.join(',') + ',' + 'EPSG:3857';
 
-                    $.ajax({
-                        url: url
-                    })
-                    .done(function(response) {
-                        vectorSource.addFeatures(vectorSource.readFeatures(response));
-                    });
-                },
-                strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
-                    maxZoom: 19
-                })),
-                projection: 'EPSG:3857'
-            });
+	             /*    $.ajax({
+	                    url: url,
+	                    dataType: 'jsonp'
+	                });
+	                
+ */
+	    		    $.post(
+	    				"/proxyUrl.do",
+	    				{
+	    					url : encodeURIComponent(url)
+	    				}, 
+	    				function (res) {
+	    					loadFeatures(res);
+	    				}
+	    				);
+      		  },
+      		  strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
+      		    maxZoom: 19
+      		  })),
+              projection: 'EPSG:3857'
+      		});
+        	
 
-            // Vector layer
-            var vectorLayer = new ol.layer.Vector({
-                source: vectorSource,
-                style: new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: 'green',
-                        width: 2
-                    })
-                })
-            });
+			
+			 window.loadFeatures = function(response) {
+			 	var geojsonFormat = new ol.format.GeoJSON();
+			 	vectorLayerJsonp.getSource().addFeatures(geojsonFormat.readFeatures(response));
+			 };
 
-            // Map
-            var map = new ol.Map({
-                target: 'map',
-                renderer: 'canvas',
-                layers: [osmLayer, vectorLayer],
-                view: new ol.View({
-                    center: ol.proj.transform([-75.923853, 45.428736], 'EPSG:4326', 'EPSG:3857'),
-                    maxZoom: 19,
-                    zoom: 11
-                })
-            });
-
-            // Source retrieving WFS data in GeoJSON format using JSONP technique
-            var vectorSourceJsonp = new ol.source.ServerVector({
-                format: new ol.format.GeoJSON(),
-                loader: function(extent, resolution, projection) {
-                    var url = 'http://demo.opengeo.org/geoserver/wfs?'+
-                        'service=WFS&request=GetFeature&'+
-                        'version=1.1.0&typename=osm:water_areas&'+
-                        'outputFormat=text/javascript&'+
-                        'format_options=callback:loadFeatures&' +
-                        'srsname=EPSG:3857&'+
-                        'bbox=' + extent.join(',');
-
-                    $.ajax({
-                        url: url,
-                        dataType: 'jsonp'
-                    });
-                },
-                strategy: ol.loadingstrategy.createTile(new ol.tilegrid.XYZ({
-                    maxZoom: 19
-                })),
-                projection: 'EPSG:3857'
-            });
-
-            // Executed when data is loaded by the $.ajax method.
+ // Inte
+ 
+/*             // Executed when data is loaded by the $.ajax method.
             var loadFeatures = function(response) {
                 vectorSourceJsonp.addFeatures(vectorSourceJsonp.readFeatures(response));
-            };
+            }; */
 
             // Vector layer
             var vectorLayerJsonp = new ol.layer.Vector({
@@ -147,17 +113,44 @@
                 })
             });
 
-            // Map
-            var mapJsonp = new ol.Map({
-                target: 'mapJsonp',
-                renderer: 'canvas',
-                layers: [osmLayer, vectorLayerJsonp],
-                view: new ol.View({
-                    center: ol.proj.transform([-75.923853, 45.428736], 'EPSG:4326', 'EPSG:3857'),
-                    maxZoom: 19,
-                    zoom: 11
-                })
-            });
+            // 배경지도 Layer 정의
+   	     var vworldLayer = new ol.layer.Tile({
+   	     	source : new ol.source.VworldMaps({
+   	     		type : 'Street',
+   	     		maxZoom : 23
+   	     	}),
+               name: 'vworld'
+   	     });
+
+   	     /**
+   	      * 화면 관리 Properties - Vworld 기반
+   	      */
+   	     // 뷰 객체
+   	     var view = new ol.View({
+   	     	projection : new ol.proj.Projection({
+   	     		code : "EPSG:3857",
+   	     		extent : [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
+   	     		unit : "m"
+   	     		// , axisOrientation : "ne" // xy 위도 경도를 바꿔서 전송한다. (GeoServer)
+   	     	}),
+   	     	maxResolution : 156543.0339,
+   	
+   	     	center : [ 14135140.63, 4518276.00 ],
+   	     	zoom : 15,
+   	     	maxZoom : 19
+   	     });	        
+
+   	     /**
+   	      * Map 정의
+   	      */
+   	     // 지도 객체
+   	     var mapJsonp = new ol.Map({
+   	     	target : "mapJsonp",
+   	     	renderer : "canvas",
+   	     	controls : [],
+   	     	layers : [ vworldLayer, vectorLayerJsonp],
+   	     	view : view
+   	     });
         </script>
     </body>
 </html>
