@@ -43,7 +43,7 @@
 
 /* 축척 레벨 바 */
 #tooltip {
-	background-image: url("/bies/images/mapsv/tooltip.png");
+	background-image: url("/resources/images/map/tooltip.png");
 	position:absolute;
 	right:47px;
 	top:100px;

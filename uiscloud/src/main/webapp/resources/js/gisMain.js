@@ -28,13 +28,6 @@ $(document).ready(function() {
 	gfnMenuEvent();				// 상단 메뉴 이벤트 - /resources/js/gisMain.js
 	
 	baseHandler.init();
-	
-	//변전소 검색 Tree
-	$("#browser").treeview({
-		persist: "location",
-		collapsed: true,
-		unique: true
-	});
 
 	// 메인 로고 클릭
 	$("#imgLogo").click(function() {
@@ -59,12 +52,10 @@ function gfnMenuEvent() {
 	// 지도정보
 	$("#a_menu_mapInfo").click(function(){
 		$("#div_view").accordion('select','지도정보');
-		return false;
-	});	
-	
-	// 단일경로 검색 - pgRouting
-	$("#a_menu_pgRouting").click(function(){
-		$("#div_view").accordion('select','단일경로 검색');		
+		// 라우팅 레이어 off
+		if(!dynamicSld.showSld.is(":checked")){
+			dynamicSld.showSld.attr("checked",true);
+		}
 		return false;
 	});	
 	
@@ -76,7 +67,10 @@ function gfnMenuEvent() {
 리턴값 :
 ***********************************************************************/
 function gfnMenuChangeUi(element) {
-	if($("#div_west").css("display") == "none") {	$("#div_layout").layout("expand", "west");  }	// 왼쪽 메뉴 보임
+	if($("#div_west").css("display") == "none") {
+		$("#div_layout").layout("expand", "west");
+		$("#div_layout").layout("split", "west");
+	}	// 왼쪽 메뉴 보임
 	$(element).show();
 }
 
@@ -148,6 +142,32 @@ function gfnInitLayout() {
 			}
 		}
 	});
+//	var today = new Date();
+//	var notiday = new Date('4/10/2015');
+//	var cookie = document.cookie;
+//	var check = cookie.indexOf('bies');
+//	if(check < 0){
+//		if(notiday > today){
+//			$("#noticeWindow").css('display','');
+//			$("#noticeWindow").window('open');
+//			$("#noDisplay").click(function(){
+//				setCookie('bies', 'notice', 10);
+//				$("#noticeWindow").window('close');
+//			});
+//		}
+//	}
+
+//	$.ajax({
+//        type: "GET",
+//        url: "/bies/bbs/NoticeListMain",
+//        //data: searchCondition,
+//        dataType: "json",
+//        contentType: "charset=UTF-8",
+//        success: function(jdata){
+//
+//        	dynamicSld.showResult("tcp_inbd_info", jdata, gridId);
+//        }
+//	});
 }
 
 function gfnResizeLayout() {

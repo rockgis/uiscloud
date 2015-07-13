@@ -259,7 +259,7 @@
 		<!-- 가운데 지도 창 -->
 		<div id="div_center" data-options="region:'center'">
 				
-                <div id="div_map"></div>
+                <div id="div_map" ></div>
           
           
 				<ul id="ul_map_tool">
@@ -333,7 +333,12 @@
 	<script type="text/javascript" src="/lib/ajaxupload/ajaxupload.js"></script>
 	
 	<!-- openlayers -->
-	<script type="text/javascript" src="/webjars/openlayers/3.2.0/ol.js"></script>
+	<!-- <script type="text/javascript" src="/webjars/openlayers/3.5.0/ol.js"></script> -->
+	
+	
+	<!-- openlayers & custom -->
+	<script type="text/javascript" src="/resources/js/openlayers/OpenLayers-min.js"></script>
+	<script type="text/javascript" src="/resources/js/mapsv/openLayersCustom.js"></script>
 	
 	<!-- Map 초기화 -->
 	<script src="/webjars/proj4js/2.2.1/proj4.js" type="text/javascript"></script>
@@ -342,10 +347,17 @@
 	<script src="/mapapi/js/proj4js/5181.js" type="text/javascript"></script>
 	
 
+
+	<!-- 다음 레이어  -->
+	<script type="text/javascript" src="/resources/js/Daum/OpenLayers.Layer.DaumHybrid.js"></script>
+	<script type="text/javascript" src="/resources/js/Daum/OpenLayers.Layer.DaumPhysical.js"></script>
+	<script type="text/javascript" src="/resources/js/Daum/OpenLayers.Layer.DaumSatellite.js"></script>
+	<script type="text/javascript" src="/resources/js/Daum/OpenLayers.Layer.DaumStreet.js"></script>
+
 	
 	<!-- gis 공용 -->
 	<script type="text/javascript" src="/resources/js/com/util.js"></script>
-	<script type="text/javascript" src="/resources/js/com/map.js"></script>  <!-- 지도 관련 라이브러리  -->
+	<script type="text/javascript" src="/resources/js/com/map2.js"></script>  <!-- 지도 관련 라이브러리  -->
 	<script type="text/javascript" src="/resources/js/com/message.js"></script>
 	<script type="text/javascript" src="/resources/js/com/properties.js"></script>
 	<script type="text/javascript" src="/resources/js/com/datagrid.js"></script>
@@ -355,61 +367,62 @@
 	<script type="text/javascript" src="/resources/js/map/mainMap.js"></script>
 	
 	
+	<!--속성조회  -->
+	<script type="text/javascript" src="/resources/js/mapsv/spatialInfo.js"></script>
 	
+	<!-- 레이어정보 -->
+	<script type="text/javascript" src="/resources/js/mapsv/layerTree.js"></script>
+	<!--동적 시스템 구성-->
+	<script type="text/javascript" src="/resources/js/handler/commonHandler.js"></script>
+	<script type="text/javascript" src="/resources/js/handler/baseHandler.js"></script>
 	
-
-	<!-- openlayers & custom 
+	<!-- 
 	<script type="text/javascript" src="/mapapi/js/map/map_init.js"></script>
 	<script type="text/javascript" src="/lib/mColorPicker/mColorPicker.js"></script>
 	
 	
 	<script type="text/javascript" src="/bies/js/mapsv/openLayersCustom.js"></script>
 	
-	<!-- jsts 
+	jsts 
 	<script type="text/javascript" src="/bies/lib/jsts/javascript.util.js"></script>
 	<script type="text/javascript" src="/bies/lib/jsts/jsts.js"></script>
 	
-	<!-- 지도 JS -->
-	<!--
+	지도 JS
 	<script type="text/javascript" src="/bies/js/bies-map-min.js"></script>
-	-->
 	
-	<!-- BIES JS -->
-	<!--
+	BIES JS
 	<script type="text/javascript" src="/bies/js/bies-min.js"></script>
-	-->
 
-	<!-- 다음 레이어  
+	다음 레이어  
 	<script type="text/javascript" src="/bies/js/Daum/OpenLayers.Layer.DaumHybrid.js"></script>
 	<script type="text/javascript" src="/bies/js/Daum/OpenLayers.Layer.DaumPhysical.js"></script>
 	<script type="text/javascript" src="/bies/js/Daum/OpenLayers.Layer.DaumSatellite.js"></script>
 	<script type="text/javascript" src="/bies/js/Daum/OpenLayers.Layer.DaumStreet.js"></script>
 
 
-	<!-- gis system 
+	gis system 
 	<script type="text/javascript" src="/bies/js/gisMain.js"></script>
 	<script type="text/javascript" src="/bies/js/map/mainMap.js"></script>
 	
-	<!-- 레이어정보 
+	레이어정보 
 	<script type="text/javascript" src="/bies/js/mapInfo/layerTree.js"></script>
-	<!-- 시설물 검색 
+	시설물 검색 
 	<script type="text/javascript" src="/bies/js/mapInfo/mapInfo.js"></script>
 
 
-	<!-- 속성조회  
+	속성조회  
 	<script type="text/javascript" src="/bies/js/mapsv/spatialInfo.js"></script>
 	
-	<!-- interativeUi
+	interativeUi
 	<script type="text/javascript" src="/bies/js/interactiveUi/interactive.js"></script>
 	
-	<!-- 동적 시스템 구성 -->
+	동적 시스템 구성
 	<script type="text/javascript" src="/resources/js/handler/commonHandler.js"></script>
 	<script type="text/javascript" src="/resources/js/handler/baseHandler.js"></script>
 	
-	<!-- 변전소 구성 트리  -->
+	변전소 구성 트리 
 	<script src="/resources/js/jquery/jquery.treeview.js" type="text/javascript"></script>
-  
-	
+   -->
 		
 </body>
 </html>

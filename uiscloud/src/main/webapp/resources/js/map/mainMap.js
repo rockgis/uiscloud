@@ -15,12 +15,13 @@
 ***********************************************************************/
 function gfnInitMainMap() {
 	map = gfnInitMap("div_map");														// 지도 초기화 - map.js
-//	gfnMainControl();																		// 메인지도 이벤트 연결 (확대, 축소, 이동, 전체, 이전, 다음, 거리, 면적, 초기화)
+	gfnMainControl();																		// 메인지도 이벤트 연결 (확대, 축소, 이동, 전체, 이전, 다음, 거리, 면적, 초기화)
 	
-//	gfnEventMap();																			// 지도 기본 기능 이벤트 연결
-//	gfnAppendBaseLayer(map);															// 지도 초기화 - /bies/js/mapsv/map.js
-//	gfnAppendWmsLayer(map, "biesLayer");										//  레이어 - /bies/js/mapsv/map.js 
-//	spatialInfo.init(map);	// 정보보기 초기화 - /bies/js/mapsv/spatialInfo.js		
+	gfnEventMap();																			// 지도 기본 기능 이벤트 연결
+	gfnAppendBaseLayer(map);															// 지도 초기화 - /bies/js/mapsv/map.js
+	gfnAppendWmsLayer(map, "biesLayer");										//  레이어 - /bies/js/mapsv/map.js 
+	map.zoomToMaxExtent();
+	spatialInfo.init(map);	// 정보보기 초기화 - /bies/js/mapsv/spatialInfo.js		
 	
 }
 
