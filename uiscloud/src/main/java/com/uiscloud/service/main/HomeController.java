@@ -30,7 +30,7 @@ public class HomeController {
 	
 		return "MainF";
 	}
-	
+
 	@RequestMapping(value = "/map", method = RequestMethod.GET)
 	public String map(Locale locale, Model model) {
 		
@@ -40,7 +40,14 @@ public class HomeController {
 		return "/map/gisMainF";
 	}
 	
+	@RequestMapping(value = "/examples", method = RequestMethod.GET)
+	public String examples(Locale locale, Model model) {
+		
+		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
+	    System.out.println("DEBUG : " + msg ); 
 	
+		return "/examples/pages/index";
+	}
 	@RequestMapping(value = "/openmap", method = RequestMethod.GET)
 	public String openmap(Locale locale, Model model) {
 		

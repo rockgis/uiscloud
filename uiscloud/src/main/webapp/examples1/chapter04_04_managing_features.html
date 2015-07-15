@@ -1,0 +1,159 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>features 제어</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="styles/d41d8cd9.vendor.css">
+
+        <!-- bootswatch yeti theme -->
+        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="styles/3c6c5ed2.main.css">
+
+        <!-- OpenLayers -->
+        <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/css/ol.css" type="text/css">
+    </head>
+    <body>
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">        
+
+            <h2>features 제어</h2>
+
+            <p>이 예제는 features 제어 방법을 보여줍니다.</p>
+ 
+            <button id="add" type="button" class="btn btn-primary btn-sm">Add +10</button>
+            <button id="increase" type="button" class="btn btn-primary btn-sm">Increase radius</button>
+            <button id="decrease" type="button" class="btn btn-primary btn-sm">Decrease radius</button>
+            <button id="remove" type="button" class="btn btn-primary btn-sm">Remove -10</button>
+
+            <div id="map" class="map" style="width: 100%; height: 600px;"></div>
+
+            <div class="footer">
+                <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Code samples for The Book of OpenLayers3</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/acanimal/thebookofopenlayers3" property="cc:attributionName" rel="cc:attributionURL">Antonio Santiago</a>. Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+            </div>
+
+        </div>
+
+        <script src="../lib/proj4js/proj4.js"></script>
+        <script src="scripts/d41d8cd9.vendor.js"></script>
+        <script src="scripts/d41d8cd9.plugins.js"></script>
+        <!-- OpenLayers -->
+        <script src="http://openlayers.org/en/v3.4.0/build/ol-debug.js" type="text/javascript"></script>
+        <script src="tilegrid/vworldtilegrid.js"></script>
+        <script src="source/vworldmapssource.js"></script>
+
+        <script id="code">
+            // Source and vector layer
+            var vectorSource = new ol.source.Vector({
+                projection: 'EPSG:4326'
+            }); 
+
+            var vectorLayer = new ol.layer.Vector({
+                source: vectorSource
+            });
+
+            
+            // 배경지도 Layer 정의
+	   	     var vworldLayer = new ol.layer.Tile({
+	   	     	source : new ol.source.VworldMaps({
+	   	     		type : 'Street',
+	   	     		maxZoom : 23
+	   	     	}),
+	               name: 'vworld'
+	   	     });
+
+	   	     /**
+	   	      * 화면 관리 Properties - Vworld 기반
+	   	      */
+	   	     // 뷰 객체
+	   	     var view = new ol.View({
+	   	     	projection : new ol.proj.Projection({
+	   	     		code : "EPSG:3857",
+	   	     		extent : [-20037508.34, -20037508.34, 20037508.34, 20037508.34],
+	   	     		unit : "m"
+	   	     		// , axisOrientation : "ne" // xy 위도 경도를 바꿔서 전송한다. (GeoServer)
+	   	     	}),
+	   	     	maxResolution : 156543.0339,
+	   	
+	   	     	center : [ 14242668, 4255169 ],
+	   	     	zoom : 7,
+	   	     	maxZoom : 23
+	   	     });	        
+	   	     
+	   	     /**
+	   	      * Map 정의
+	   	      */
+	   	     // 지도 객체
+	   	     var map = new ol.Map({
+	   	     	target : "map",
+	   	     	renderer : "canvas",
+	   	     	controls : [],
+	   	     	layers : [ vworldLayer, vectorLayer],
+	   	     	view : view
+	   	     });
+	   	     
+            // Add 10 random circle features
+            function addFeatures() {
+                var i, lat, lon, geom, feature, features = [];
+                for(i=0; i< 10; i++) {
+                    lat = Math.random() * 174 - 87;
+                    lon = Math.random() * 360 - 180;
+
+                    geom = new ol.geom.Circle(
+                     	[ 14382668, 4255169 ],
+                         70000
+                     );
+
+                    feature = new ol.Feature(geom);
+                    features.push(feature);
+                }    
+                vectorSource.addFeatures(features);
+                return features;
+            }
+
+            // Remove 10 features
+            function removeFeatures() {
+                var features = vectorSource.getFeatures();
+                for(var i=0; i< features.length && i<10; i++) {
+                    vectorSource.removeFeature(features[i]);
+                }
+            }
+
+            // Increase circle feature radius. Negative values decreases.
+            function increaseRadius(inc) {
+                var features = vectorSource.getFeatures(), geom;
+
+                // Note we use 'getFeatures()' because with forEachFeature we
+                // can not modify feature's geometry or will get a
+                // 'cannot update extent while reading' error.
+                for(var i=0; i< features.length; i++) {
+                    geom = features[i].getGeometry();
+                    geom.setRadius( geom.getRadius() + inc);
+                } 
+            }
+            
+            // Attach listeners.
+            $('#add').on('click', function(){
+                addFeatures();
+            });
+            $('#remove').on('click', function(){
+                removeFeatures();
+            });
+            $('#increase').on('click', function(){
+                increaseRadius(30000);
+            });
+            $('#decrease').on('click', function(){
+                increaseRadius(-30000);
+            });
+            
+        </script>
+    </body>
+</html>
