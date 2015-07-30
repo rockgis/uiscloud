@@ -50,7 +50,7 @@
         <div class="col-md-4">
           <h2>Openalyer 3.X Example</h2>
           <p>Openlyers 3.X 기반의 예제 </p>
-          <p><a class="btn btn-default" href="/examples" role="button">View Example &raquo;</a></p>
+          <p><a class="btn btn-default" href="/examples/test" role="button">View Example &raquo;</a></p>
         </div>
         <div class="col-md-4">
           <h2>Openalyer 3.2.0 Apidoc</h2>
