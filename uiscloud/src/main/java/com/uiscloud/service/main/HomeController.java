@@ -46,8 +46,9 @@ public class HomeController {
 		String msg = messageSource.getMessage("required.keyword", null, Locale.KOREA); 
 	    System.out.println("DEBUG : " + msg ); 
 	
-		return "/examples/layouts/layout";
+		return "/examples/index";
 	}
+	
 	@RequestMapping(value = "/openmap", method = RequestMethod.GET)
 	public String openmap(Locale locale, Model model) {
 		

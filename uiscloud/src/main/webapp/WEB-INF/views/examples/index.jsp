@@ -1,6 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="UTF-8"%>
+    <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
 
     <meta charset="utf-8">
@@ -54,16 +56,175 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> 예제 목록</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 지도보기<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="flot.html">Flot Charts</a>
+                                    <a href="flot.html">기본 지도</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">Morris.js Charts</a>
+                                    <a href="morris.html">지도 조작</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">지도 영역 조작</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">지도 애니메이션</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 레이어<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">레이어 추가/삭제</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">레이어 스택</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">레이어 그룹</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">이미지 레이어</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">레이어 해상도</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">히트맵 레이어</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 데이터와 형식<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">OpenLayers3 제공 타일</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">WMTS 서버</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">이미지캔버스 작업</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">벡터 소스</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">WMS 서버 데이터 요청</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">벡터를 래스터로 렌더링</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">WFS 서버 데이터 요청</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">로딩 전략에 대한 작업</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">WMS 기능 읽기</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">features 입력/삭제</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 벡터 레이어<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">공간 정보</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">features 생성</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">스타일</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">아이콘 스타일링</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">스타일 내의 텍스트</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">스타일 함수 작업</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">features 제어</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 이벤트의 리스너와 속성<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">이벤트의 리스너와 속성</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">지도 동기화</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">마우스의 위치 표시</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">Listening for changes on vector data</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">마우스 포인터의 features 스타일링</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">마우스 포인터의 features 스타일링</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 오버레이<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">기본 오버레이</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">마커 구현</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 컨트롤과 인터렉션<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="flot.html">정적 지도</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">컨트롤 실행</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">사용자 정의 컨트롤</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">Feature 오버레이</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">인터렉션 관리</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">features 선택</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">features 편집</a>
+                                </li>
+                                <li>
+                                    <a href="morris.html">드래그로 features 선택</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
