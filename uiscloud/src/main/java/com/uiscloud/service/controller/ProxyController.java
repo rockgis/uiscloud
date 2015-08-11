@@ -40,7 +40,7 @@ public class ProxyController {
 	 * @param response 응답
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/proxy.do")
+	@RequestMapping(value="/proxy")
 	   public void proxyPost(HttpServletRequest request, HttpServletResponse res) throws Exception {
 	      String urlStr = "http://211.58.18.254:8180/sktbigis/wfs";
 	      //String urlStr = URLDecoder.decode(request.getParameter("url"), "UTF-8");
@@ -68,7 +68,7 @@ public class ProxyController {
 	 * @param response 응답
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/proxyUrl.do")
+	@RequestMapping(value="/proxyUrl")
 	   public void proxyUrl(HttpServletRequest request, HttpServletResponse res) throws Exception {
 	      String urlStr = URLDecoder.decode(request.getParameter("url"), "UTF-8");
 	      //String params = URLDecoder.decode(request.getParameter("params"),"UTF-8");
