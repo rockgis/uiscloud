@@ -60,7 +60,7 @@
 
 		
 		<div id="div_north" data-options="region:'north'">
-			<span id="span_logo"><a href="#"><img id="imgLogo" src="/resources/images/logo_kepco_1.png" alt="KEPCO Logo" /></a></span>
+			<span id="span_logo"><a href="#">UISCLOUD LOGO</a></span>
 			
 			<ul id="ul_menu">
 				<li><a href="#" id="a_menu_mapInfo"><img src="/resources/images/main_menu/map_info_n.png" class="toggle" alt="지도정보" /></a></li>				

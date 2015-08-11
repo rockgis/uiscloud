@@ -53,14 +53,15 @@
           <p><a class="btn btn-default" href="/examples" role="button">View Example &raquo;</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Openalyer 3.2.0 Apidoc</h2>
-          <p> Openalyer 3.2.0 기반의 OpenLayers 3 API Documentation </p>
-          <p><a class="btn btn-default" href="/lib/v3.2.0/apidoc/index.html" role="button">View APIDoc &raquo;</a></p>
+          <h2>Openalyer 3.X Apidoc</h2>
+          <p> Openalyer 3.X 기반의 OpenLayers 3 API Documentation </p>
+          <p><a class="btn btn-default" href="http://openlayers.org/en/v3.8.2/apidoc/" role="button">View APIDoc &raquo;</a></p>
        </div>
         <div class="col-md-4">
-          <h2><spring:message code="test.test" /></h2>
+          <h2><h2>UISCLOUD LIB API</h2>
+          <p> UISCLOUD LIB API 기반의 API Documentation </p></h2>
           <p></p>
-          <p><a class="btn btn-default" href="/openmap.uis" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-default" href="/openmap" role="button">View details &raquo;</a></p>
         </div>
       </div>
 
