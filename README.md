@@ -1,2 +1,4 @@
 # uiscloud
-uiscloud.com service 레파지토리
+
+GeoLIB service 레파지토리
+
