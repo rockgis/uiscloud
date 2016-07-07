@@ -7,7 +7,7 @@
 
 	<aop:config>
 		<aop:pointcut id="serviceMethod"
-			expression="execution(* org.uiscloud.gis..impl.*Impl.*(..))" />
+			expression="execution(* org.uiscloud..impl.*Impl.*(..))" />
 
 		<aop:aspect ref="exceptionTransfer">
 			<aop:after-throwing throwing="exception"

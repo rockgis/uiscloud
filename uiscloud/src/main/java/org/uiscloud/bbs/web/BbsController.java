@@ -27,13 +27,14 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.View;
+
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
 import org.uiscloud.bbs.service.BbsDefaultVO;
 import org.uiscloud.bbs.service.BbsService;
 import org.uiscloud.bbs.service.BbsVO;
 import org.uiscloud.bbsTail.service.BbsTailVO;
-
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * @Class Name : BbsController.java

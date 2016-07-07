@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bbsDAO">	
-	<resultMap id="bbs" type="org.uiscloud.gis.bbs.service.BbsVO">
+	<resultMap id="bbs" type="org.uiscloud.bbs.service.BbsVO">
 		<result property="bbsId" column="CNT_ID"/>
 		<result property="title" column="TITLE"/>
 		<result property="content" column="CONTENT"/>
@@ -16,7 +16,7 @@
 		<result property="tailCount" column="TAIL_COUNT"/>
 	</resultMap>
 	
-	<insert id="insertBbs_S" parameterType="org.uiscloud.gis.bbs.service.BbsVO" useGeneratedKeys="true" keyProperty="bbsId">	
+	<insert id="insertBbs_S" parameterType="org.uiscloud.bbs.service.BbsVO" useGeneratedKeys="true" keyProperty="bbsId">	
 		INSERT INTO BBS 
 			( 
 				TITLE

@@ -71,9 +71,9 @@
 	</authentication-manager>
 
 	<beans:bean id="userLoginSuccessHandler"
-		class="org.uiscloud.gis.member.service.UserLoginSuccessHandler"></beans:bean>
+		class="org.uiscloud.member.service.UserLoginSuccessHandler"></beans:bean>
 	<beans:bean id="userLoginFailureHandler"
-		class="org.uiscloud.gis.member.service.UserLoginFailureHandler"></beans:bean>
+		class="org.uiscloud.member.service.UserLoginFailureHandler"></beans:bean>
 	<beans:bean id="passwordEncoder"
 		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
 		<beans:constructor-arg name="strength" value="256"></beans:constructor-arg>

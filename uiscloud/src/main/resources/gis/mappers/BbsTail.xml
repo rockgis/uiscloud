@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bbsTailDAO">
-	<resultMap id="bbsTail" type="org.uiscloud.gis.bbsTail.service.BbsTailVO">
+	<resultMap id="bbsTail" type="org.uiscloud.bbsTail.service.BbsTailVO">
 		<result property="bbsTailId" column="CNT_ID"/>
 		<result property="content" column="CONTENT"/>
 		<result property="creator" column="CREATOR"/>

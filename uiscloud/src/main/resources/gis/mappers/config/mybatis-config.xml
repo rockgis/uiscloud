@@ -10,8 +10,8 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias alias="commonCodeMasterVO" type="org.uiscloud.gis.com.service.CommonCodeMasterVO" />
-		<typeAlias alias="lglCdVO" type="org.uiscloud.gis.com.service.LglCdVO" />
+		<typeAlias alias="commonCodeMasterVO" type="org.uiscloud.com.service.CommonCodeMasterVO" />
+		<typeAlias alias="lglCdVO" type="org.uiscloud.com.service.LglCdVO" />
 		
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 		
@@ -49,8 +49,8 @@
 	    
 	    <typeAlias alias="InteractiveVO" type="org.uiscloud.gis.interactiveUi.service.InteractiveVO" />		
 	    		
-		<typeAlias alias="bbsSearchVO" type="org.uiscloud.gis.bbs.service.BbsDefaultVO"/>
-		<typeAlias alias="bbsTailSearchVO" type="org.uiscloud.gis.bbsTail.service.BbsTailDefaultVO"/>
+		<typeAlias alias="bbsSearchVO" type="org.uiscloud.bbs.service.BbsDefaultVO"/>
+		<typeAlias alias="bbsTailSearchVO" type="org.uiscloud.bbsTail.service.BbsTailDefaultVO"/>
 		
 		<typeAlias alias="RoutingVO" type="org.uiscloud.gis.routing.service.RoutingVO" />
 		<typeAlias alias="KroutingVO" type="org.uiscloud.gis.routing.service.KroutingVO" />
@@ -61,11 +61,11 @@
 		<typeAlias alias="bookmarkSearchVO" type="org.uiscloud.gis.bookmark.service.BookmarkSearchVO" />
 		<typeAlias alias="bookmarkVO" type="org.uiscloud.gis.bookmark.service.BookmarkVO" />
 				
-		<typeAlias alias="MemberSearchVO" type="org.uiscloud.gis.member.service.MemberSearchVO"/>
-		<typeAlias alias="MemberVO" type="org.uiscloud.gis.member.service.MemberVO"/>
+		<typeAlias alias="MemberSearchVO" type="org.uiscloud.member.service.MemberSearchVO"/>
+		<typeAlias alias="MemberVO" type="org.uiscloud.member.service.MemberVO"/>
 		
-		<typeAlias alias="UserAdminVO" type="org.uiscloud.gis.admin.service.UserAdminVO"/>
-		<typeAlias alias="LayerMNGAdminVO" type="org.uiscloud.gis.admin.service.LayerMNGAdminVO"/>
+		<typeAlias alias="UserAdminVO" type="org.uiscloud.admin.service.UserAdminVO"/>
+		<typeAlias alias="LayerMNGAdminVO" type="org.uiscloud.admin.service.LayerMNGAdminVO"/>
 		
 	</typeAliases>
 </configuration>
