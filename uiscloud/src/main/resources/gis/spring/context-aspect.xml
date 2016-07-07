@@ -58,7 +58,7 @@
 		</property>
 	</bean>	
 
-	<bean id="egovHandler" class="org.uiscloud.gis.com.EgovSampleExcepHndlr" />
-	<bean id="otherHandler" class="org.uiscloud.gis.com.EgovSampleOthersExcepHndlr" />	
+	<bean id="egovHandler" class="org.uiscloud.com.EgovSampleExcepHndlr" />
+	<bean id="otherHandler" class="org.uiscloud.com.EgovSampleOthersExcepHndlr" />	
 	
 </beans>

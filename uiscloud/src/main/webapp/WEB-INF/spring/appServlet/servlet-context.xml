@@ -44,7 +44,7 @@
 	</beans:bean>
 
 	<!-- For Pagination Tag -->
-	<beans:bean id="imageRenderer" class="org.uiscloud.gis.com.web.EgovImgPaginationRenderer" />
+	<beans:bean id="imageRenderer" class="org.uiscloud.com.web.EgovImgPaginationRenderer" />
 
 	<beans:bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
 		<beans:property name="rendererType">
@@ -63,6 +63,6 @@
 	<view-controller path="nits/project" view-name="nits/project/list.tpml" />
  -->	
 	
-	<view-controller path="gisExpert" view-name="bies/gisExpert" />
+	<view-controller path="gisExpert" view-name="gis/gisExpert" />
 	<!-- Temp -->
 </beans:beans>
