@@ -1,4 +1,4 @@
-package org.uiscloud.gis;
+package org.uiscloud;
 
 //import java.text.DateFormat;
 //import java.util.Date;
