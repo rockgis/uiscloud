@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- SQL File Name : Interactive.xml 
+	Description : 인터렉티브 UI Modification Information 수정일 수정자 Version Query Id 
+	2014.09.01 김종민 1.0 최초생성 2014.09.17 김종민 1.1 라인 라벨용 필드 변경 --><!--Converted at: Tue May 20 09:43:10 
+	KST 2014 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="interactiveDAO">
+	<resultMap id="InteractiveVOResult" type="InteractiveVO">
+		<result property="nodeId" column="nodeId" />
+		<result property="tpoName" column="tpoName" />
+		<result property="tpoCode" column="tpoCode" />
+		<result property="jpName" column="jpName" />
+		<result property="jpCode" column="jpCode" />
+		<result property="clientCd" column="clientCd" />
+
+		<result property="source" column="source" />
+		<result property="target" column="target" />
+		<result property="sysClf" column="sysClf" />
+		<result property="sumCoreCnt" column="sumCoreCnt" />
+		<result property="sumUseCoreCnt" column="sumUseCoreCnt" />
+		<result property="countCable" column="countCable" />
+	</resultMap>
+
+	<select id="searchNodes" parameterType="MapInfoCaSearchVO"
+		resultMap="InteractiveVOResult">
+		SELECT
+		vertices.node_id as nodeId,
+		tpo.fcts_nm as tpoName,
+		tpo.gis_code as tpoCode,
+		jp.unq_mgno as jpName,
+		jp.gis_code as jpCode,
+		tpo.client_cd as clientCd
+		FROM
+		(SELECT
+		source as node_id,
+		pgr_startpoint(the_geom) as the_geom
+		FROM
+		gotc_ca_network as g1
+		<if test="lglCd != null and lglCd != ''">
+			,gcmm_lgld_gm as g2
+		</if>
+		WHERE 1 = 1
+		AND g1.ungr_loc IN ('A','D')
+		<if test="sysClf != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="sysClf" item="item">
+					<if test="item == 'null'">
+						OR g1.sys_clf is null
+					</if>
+					<if test="item != 'null'">
+						OR g1.sys_clf = '${item}'
+					</if>
+				</foreach>
+			</trim>
+		</if>
+
+
+		<include refid="whereCommon" />
+
+		<if test="lglCd != null and lglCd != ''">
+			AND g2.umd_cd LIKE #{lglCd} || '%'
+			AND st_intersects(g1.the_geom,g2.the_gom)
+		</if>
+		<!-- polygonWKT -->
+		<if test="polygonWKT != null and polygonWKT != ''">
+			AND ST_Intersects(g1.the_geom, ST_GeomFromText(#{polygonWKT}, 5181))
+		</if>
+		UNION
+		SELECT
+		target as node_id,
+		pgr_endpoint(the_geom) as the_geom
+		FROM
+		gotc_ca_network as g1
+		<if test="lglCd != null and lglCd != ''">
+			,gcmm_lgld_gm as g2
+		</if>
+		WHERE 1 = 1
+
+		<include refid="whereCommon" />
+
+		<if test="lglCd != null and lglCd != ''">
+			AND g2.umd_cd LIKE #{lglCd} || '%'
+			AND st_intersects(g1.the_geom,g2.the_gom)
+		</if>
+		) as vertices
+		LEFT JOIN
+		(SELECT
+		g1.*
+		FROM
+		gotc_tpo as g1
+		<if test="lglCd != null and lglCd != ''">
+			,gcmm_lgld_gm as g2
+		</if>
+		WHERE 1 = 1
+		<if test="lglCd != null and lglCd != ''">
+			AND g2.umd_cd LIKE #{lglCd} || '%'
+			AND st_intersects(g1.the_geom,g2.the_gom)
+		</if>
+		<if test="polygonWKT != null and polygonWKT != ''">
+			AND ST_Intersects(g1.the_geom, ST_GeomFromText(#{polygonWKT}, 5181))
+		</if>
+		) as tpo
+		ON
+		st_dwithin(vertices.the_geom,tpo.the_geom,2.5)
+		LEFT JOIN
+		(SELECT
+		g1.*
+		FROM
+		gotc_jp as g1
+		<if test="lglCd != null and lglCd != ''">,gcmm_lgld_gm as g2</if>
+		WHERE 1 = 1
+		<if test="lglCd != null and lglCd != ''">AND g2.umd_cd LIKE #{lglCd} || '%'
+			AND st_intersects(g1.the_geom,g2.the_gom)
+		</if>
+		<if test="polygonWKT != null and polygonWKT != ''">AND ST_Intersects(g1.the_geom,
+			ST_GeomFromText(#{polygonWKT}, 5181))</if>
+		) as jp
+		ON
+		st_dwithin(vertices.the_geom,jp.the_geom,2.5)
+	</select>
+
+	<select id="searchLinks" parameterType="MapInfoCaSearchVO"
+		resultMap="InteractiveVOResult">
+		SELECT
+		source,
+		target,
+		sys_clf as sysClf,
+		sum(core_cnt) as sumCoreCnt,
+		sum(use_core_cnt) as sumUseCoreCnt,
+		count(*) as countCable
+		FROM
+		gotc_ca_network g1
+		<if test="lglCd != null and lglCd != ''">
+			,(SELECT
+			*
+			FROM gcmm_lgld_gm
+			WHERE 1=1
+			AND umd_cd LIKE #{lglCd} || '%'
+
+			) as g2
+		</if>
+		WHERE 1 = 1
+
+		<include refid="whereCommon" />
+
+		<if test="lglCd != null and lglCd != ''">
+			AND st_intersects(g1.the_geom,g2.the_gom)
+		</if>
+
+		GROUP BY g1.source, g1.target, g1.sys_clf
+	</select>
+
+	<sql id="whereCommon">
+		<if test="gisCode != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="gisCode" item="item">
+					<if test="item == 'null'">
+						OR gis_code is null
+					</if>
+					<if test="item != 'null'">
+						OR gis_code = '${item}'
+					</if>
+				</foreach>
+			</trim>
+		</if>
+		<!-- 시설명 -->
+		<if test="fctsNm != null and fctsNm != ''">
+			AND lower(fcts_nm) LIKE '%' || lower(#{fctsNm}) || '%'
+		</if>
+		<!-- 고유관리번호 -->
+		<if test="unqMgno != null and unqMgno != ''">
+			AND lower(unq_mgno) LIKE '%' || lower(#{unqMgno}) || '%'
+		</if>
+		<!-- NITS공사번호 -->
+		<if test="cnstMgno != null and cnstMgno != ''">
+			AND lower(cnst_mgno) LIKE '%' || lower(#{cnstMgno}) || '%'
+		</if>
+		<!-- 자산소유구분 -->
+		<if test="sysClf != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="sysClf" item="item">
+					<if test="item == 'null'">
+						OR sys_clf is null
+					</if>
+					<if test="item != 'null'">
+						OR sys_clf = '${item}'
+					</if>
+				</foreach>
+			</trim>
+		</if>
+
+		<!-- LglCd -->
+		<if test="lglCd != null and lglCd != ''">
+			AND g1.lgl_cd LIKE #{lglCd} || '%'
+		</if>
+
+		<!-- polygonWKT -->
+		<if test="polygonWKT != null and polygonWKT != ''">
+			AND ST_Intersects(g1.the_geom,
+			ST_GeomFromText(#{polygonWKT}, 5181))
+		</if>
+
+		<!-- 매설위치 -->
+		<if test="ungrLoc != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="ungrLoc" item="item">
+					<if test="item == 'null'">
+						OR g1.ungr_loc is null
+					</if>
+					<if test="item != 'null'">
+						OR g1.ungr_loc = '${item}'
+					</if>
+				</foreach>
+			</trim>
+		</if>
+
+		<!-- 포설거리 최소 -->
+		<if test="compLenMin != null and compLenMin != ''">
+			AND g1.comp_len &gt;= #{compLenMin}
+		</if>
+
+		<!-- 포설거리 최대 -->
+		<if test="compLenMax != null and compLenMax != ''">
+			AND g1.comp_len &lt;= #{compLenMax}
+		</if>
+
+		<!-- 지도거리 최소 -->
+		<if test="gisLenMin != null and gisLenMin != ''">
+			AND g1.gis_len &gt;= #{gisLenMin}
+		</if>
+
+		<!-- 지도거리 최대 -->
+		<if test="gisLenMax != null and gisLenMax != ''">
+			AND g1.gis_len &lt;= #{gisLenMax}
+		</if>
+
+		<!-- 코아수 최소 -->
+		<if test="coreCntMin != null and coreCntMin != ''">
+			AND g1.core_cnt &gt;= #{coreCntMin}
+		</if>
+
+		<!-- 코아수 최대 -->
+		<if test="compLenMax != null and compLenMax != ''">
+			AND g1.core_cnt &lt;= #{compLenMax}
+		</if>
+
+		<!-- 사용코아수 최소 -->
+		<if test="useCoreCntMin != null and useCoreCntMin != ''">
+			AND g1.use_core_cnt &gt;= #{useCoreCntMin}
+		</if>
+
+		<!-- 사용코아수 최대 -->
+		<if test="useCoreCntMax != null and useCoreCntMax != ''">
+			AND g1.use_core_cnt &lt;= #{useCoreCntMax}
+		</if>
+
+		<!-- 접속코아수 최소 -->
+		<if test="connCoreCntMin != null and connCoreCntMin != ''">
+			AND g1.conn_core_cnt &gt;= #{connCoreCntMin}
+		</if>
+
+		<!-- 접속코아수 최대 -->
+		<if test="connCoreCntMax != null and connCoreCntMax != ''">
+			AND g1.conn_core_cnt &lt;= #{connCoreCntMax}
+		</if>
+
+		<!-- 설치일자 시작일자 -->
+		<if test="compDtStartDate != null and compDtStartDate != ''">
+			AND g1.comp_dt &gt;= #{compDtStartDate}
+		</if>
+
+		<!-- 설치일자 완료일자 -->
+		<if test="compDtFinishDate != null and compDtFinishDate != ''">
+			AND g1.comp_dt &lt;= #{compDtFinishDate}
+		</if>
+
+		<!-- 작업지시번호 -->
+		<if test="workDocNo != null and workDocNo != ''">
+			AND work_doc_no LIKE '%' || #{workDocNo} || '%'
+		</if>
+
+		<!-- 케이블제조번호 -->
+		<if test="caMnftNo != null and caMnftNo != ''">
+			AND ca_mnftno LIKE '%' || #{caMnftNo} || '%'
+		</if>
+
+		<!-- 망 분류 -->
+		<if test="netClf != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="netClf" item="item">
+					<if test="item == 'null'">
+						OR g1.net_clf is null
+					</if>
+					<if test="item != 'null'">
+						OR g1.net_clf = '${item}'
+					</if>
+				</foreach>
+			</trim>
+		</if>
+
+		<!-- 서비스구분 -->
+		<if test="serviceType != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="serviceType" item="item">
+					<if test="item != 'null' and item != ''">
+						OR ${item} > 0
+					</if>
+				</foreach>
+			</trim>
+		</if>
+
+		<!-- 코아수용률 -->
+		<if test="useCoreGrade != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="useCoreGrade" item="item">
+					<if test="item == 0">
+						OR g1.use_core_cnt / g1.core_cnt * 100 &lt; 40
+					</if>
+					<if test="item == 1">
+						OR (g1.use_core_cnt / g1.core_cnt * 100 &gt;= 40 AND g1.use_core_cnt
+						/ g1.core_cnt * 100 &lt; 60)
+					</if>
+					<if test="item == 2">
+						OR (g1.use_core_cnt / g1.core_cnt * 100 &gt;= 60 AND g1.use_core_cnt
+						/ g1.core_cnt * 100 &lt; 80)
+					</if>
+					<if test="item == 3">
+						OR (g1.use_core_cnt / g1.core_cnt * 100 &gt;= 80 AND g1.use_core_cnt
+						/ g1.core_cnt * 100 &lt; 90)
+					</if>
+					<if test="item == 4">
+						OR g1.use_core_cnt / g1.core_cnt * 100 &gt; 90
+					</if>
+				</foreach>
+			</trim>
+		</if>
+
+		<!-- 잔여코아수 최소 -->
+		<if test="coreRemainingCntMin != null and coreRemainingCntMin != ''">
+			AND g1.core_cnt - g1.use_core_cnt &gt;= #{coreRemainingCntMin}
+		</if>
+
+		<!-- 잔여코아수 최대 -->
+		<if test="coreRemainingCntMax != null and coreRemainingCntMax != ''">
+			AND g1.core_cnt - g1.use_core_cnt &lt;= #{coreRemainingCntMax}
+		</if>
+	</sql>
+</mapper>

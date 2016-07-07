@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue May 20 14:00:24 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="routingDAO">
+	<select id="route" parameterType="RoutingVO" resultType="RoutingVO">
+		SELECT 
+			seq,
+			id1 AS node,
+			id2 AS edge,
+			a.cost,
+			st_astext(b.the_geom) AS geom,
+       		b.cost AS bCost,
+       		ufid AS caMgno,
+			objectid AS unqMgno,
+			rddv AS sysClf,
+			pvqt AS ungrLoc, 
+			dvyn AS netClf 
+		FROM pgr_dijkstra('
+                SELECT gid as id, source, target,
+                	
+                		<if test='byCost == 1'>
+                			cost
+                		</if>
+                		<if test='byCost == 2'>
+                			cost1
+                		</if>
+                		<if test='byCost == 3'>
+                			cost2
+                		</if>
+                	as cost
+                	
+                	<!-- if test='byCost == "SK"'>
+                		CASE WHEN sys_clf = ''SK'' THEN cost
+						     WHEN sys_clf = ''HT'' THEN cost*10000
+						     WHEN gis_code = ''CN002'' THEN cost*100
+						END as cost
+		        	</if>
+                	<if test='byCost == "HT"'>
+                		CASE WHEN sys_clf = ''SK'' THEN cost*10000
+						     WHEN sys_clf = ''HT'' THEN cost
+						     WHEN gis_code = ''CN002'' THEN cost*100
+						END as cost
+		        	</if>
+                	<if test='sysClf == "BOTH" or sysClf == null'>
+                		cost
+		        	</if -->
+                FROM ROAD
+               
+                	<include refid="routingDAO.filters" />
+                	',
+                (
+					select id from road_vertices_pgr
+					where ST_Intersects(ST_Buffer(ST_GeomFromText('POINT(${startPoint})', 5181), ${buffer}), the_geom)
+					order by ST_Distance(ST_GeomFromText('POINT(${startPoint})', 5181), the_geom) asc
+					limit 1
+                )::Integer, 
+				(
+					select id from road_vertices_pgr
+					where ST_Intersects(ST_Buffer(ST_GeomFromText('POINT(${endPoint})', 5181), ${buffer}), the_geom)
+					order by ST_Distance(ST_GeomFromText('POINT(${endPoint})', 5181), the_geom) asc
+					limit 1
+                )::Integer
+                , false, false) a LEFT JOIN ROAD b ON (a.id2 = b.gid)
+		order by seq asc
+	</select>
+	
+	<select id="kroute" parameterType="KroutingVO" resultType="KroutingVO">
+		SELECT 
+			seq,
+			id1 AS path,
+			id2 AS node,
+			id3 AS edge,
+			a.cost,
+			st_astext(b.the_geom) AS geom,
+       		b.cost AS bCost,
+       		ufid AS caMgno,
+			rdln AS unqMgno,
+			rddv AS sysClf,
+			pvqt AS ungrLoc, 
+			dvyn AS netClf  
+		FROM pgr_kdijkstraPath('
+                SELECT gid as id, source, target,
+                
+                		<if test='byCost == 1'>
+                			cost
+                		</if>
+                		<if test='byCost == 2'>
+                			cost1
+                		</if>
+                		<if test='byCost == 3'>
+                			cost2
+                		</if>
+                	as cost
+                FROM ROAD
+                WHERE
+                	<include refid="routingDAO.filters" />
+                ',
+                ${source}, 
+				array[${targets}]
+                , false, false) a LEFT JOIN ROAD b ON (a.id3 = b.gid)
+		order by seq asc
+	</select>
+	
+		
+	<select id="aroute" parameterType="AroutingVO" resultType="AroutingVO">
+		SELECT 
+			seq,
+			id1 AS path,
+			id2 AS node,
+			id3 AS edge,
+			a.cost,
+			st_astext(b.the_geom) AS geom,
+			ca_mgno AS caMgno,
+			unq_mgno AS unqMgno, 
+			fcts_nm AS fctsNm, 	
+			(SELECT ADDR FROM AREA_TEMP_MST WHERE LGL_CD =B.LGL_CD) AS lglCd,
+			sys_clf AS sysClf, 
+			ungr_loc AS ungrLoc, 
+			own_clf AS ownClf, 
+       		comp_len AS compLen, 
+       		gis_len AS gisLen, 
+       		core_cnt AS coreCnt, 
+       		use_core_cnt AS useCoreC,
+			round(use_core_cnt / CASE WHEN core_cnt=0 THEN 1 ELSE core_cnt END * 100) || '%' as useCoreGrade,
+       		comp_dt AS compDt, 
+       		cnst_mgno AS cnstMgno, 
+       		work_doc_no AS workDocN, 
+       		ca_mnftno AS caMnftno, 
+       		net_clf AS netClf, 
+       		ca_ind AS caInd, 
+       		insert_dt AS insertDt, 
+       		insert_opr AS insertOpr,
+       		gis_code AS gisCode,
+       		b.cost AS bCost
+		FROM pgr_kdijkstraPath('
+                SELECT gid as id, source, target, cost
+                FROM road
+                WHERE
+                	gis_code &lt;&gt; ''CA004''
+                	AND gis_code &lt;&gt; ''CA008''
+               	<if test="bbox != null">
+                	AND ST_Intersects(the_geom, ST_GeomFromText(''${bbox}'', 5181))
+                </if>
+                ',
+                ${source}, 
+				array[${targets}]
+                , false, false) a LEFT JOIN road b ON (a.id3 = b.gid)
+		order by seq asc
+	</select>
+
+	<select id="findNearestEdge" parameterType="RoutingVO" resultType="EdgeVo">
+		select id, st_astext(the_geom) as wellKnownText from road_vertices_pgr
+		where ST_Intersects(ST_Buffer(ST_GeomFromText('POINT(${x} ${y})', 5181), ${buffer}), the_geom)
+		order by ST_Distance(ST_GeomFromText('POINT(${x} ${y})', 5181), the_geom) asc
+		limit 1
+	</select>
+
+	<select id="findNearestLine" parameterType="RoutingVO" resultType="EdgeVo">
+		select gid, st_astext(the_geom) as wellKnownText from road
+		where ST_Intersects(ST_Buffer(ST_GeomFromText('POINT(${x} ${y})', 5181), ${buffer}), the_geom)
+		order by ST_Distance(ST_GeomFromText('POINT(${x} ${y})', 5181), the_geom) asc
+		limit 1
+	</select>
+
+	<select id="findNearestDemand" parameterType="RoutingVO" resultType="EdgeVo">
+		select gid, st_astext(the_geom) as wellKnownText from tcp_inbd_info
+		where ST_Intersects(ST_Buffer(ST_GeomFromText('${targetWkt}', 5181), ${buffer}), the_geom)
+		order by ST_Distance(ST_GeomFromText('${targetWkt}', 5181), the_geom) asc
+		limit 1
+	</select>
+	
+	<select id="findNearestTpo" parameterType="RoutingVO" resultType="EdgeVo">
+		select gid, st_astext(the_geom) as wellKnownText from gotc_tpo
+		where ST_Intersects(ST_Buffer(ST_GeomFromText('${targetWkt}', 5181), ${buffer}), the_geom)
+		order by ST_Distance(ST_GeomFromText('${targetWkt}', 5181), the_geom) asc
+		limit 1
+	</select>
+	
+	<select id="getTargetsByDemand" parameterType="RoutingVO" resultType="EdgeVo">
+		select id, st_astext(the_geom) as wellKnownText 
+		FROM road_vertices_pgr 
+		where ST_DWithin(ST_GeomFromText(#{bldgWkt}, 5181), the_geom, ${bldgMeters})
+	</select>
+	
+	<select id="getTarget" parameterType="java.lang.Integer" resultType="EdgeVo">
+		select id, st_astext(the_geom) as wellKnownText from road_vertices_pgr
+		where id = ${value}
+	</select>
+	
+	<select id="filterTargets1" parameterType="KroutingVO" resultType="String">
+		SELECT array_to_string(array_agg(DISTINCT target), ',') 
+		FROM road
+		WHERE
+			<include refid="routingDAO.filters2" />
+			and target = ANY(ARRAY[${targets}])
+	</select>
+	
+	<select id="filterTargets2" parameterType="KroutingVO" resultType="String">
+		SELECT array_to_string(array_agg(DISTINCT source), ',') 
+		FROM road
+		WHERE
+			<include refid="routingDAO.filters2" />
+			and source = ANY(ARRAY[${targets}])
+	</select>
+	
+	<select id="findTargets" parameterType="TargetParam" resultType="String">
+		SELECT find_ms_targets(${x}, ${y}, ${hubMeters}, ${bldgMeters}, #{demandWkt});
+	</select>
+
+	<sql id="filters">
+		<!-- AND COALESCE(ungr_loc, '''') &lt;&gt; ''B'' -->
+		<if test="bbox != null and bbox.length() &gt; 0">
+			where ST_Intersects(the_geom, ST_GeomFromText(''${bbox}'', 5181))
+		</if>
+		<!-- if test="lglCd != null and lglCdType != null">
+			<choose>
+				<when test="lglCdType == 'sido'">
+					AND ST_Intersects(the_geom, ST_GeomFromText(''${lglCdWkt}'', 5181))
+				</when>
+				<when test="lglCdType == 'sgg'">
+					AND ST_Intersects(the_geom, ST_GeomFromText(''${lglCdWkt}'', 5181))
+				</when>
+				<when test="lglCdType == 'lgld'">
+					AND ST_Intersects(the_geom, ST_GeomFromText(''${lglCdWkt}'', 5181))
+				</when>
+			</choose>
+		</if>
+		<if test="polyWkt != null and polyWkt != ''">
+			AND ST_Intersects(the_geom, ST_GeomFromText(''${polyWkt}'', 5181))
+		</if -->
+				
+		<if test="nonStopOverPoints != null and nonStopOverPoints.length() &gt; 0">
+			AND (source != ALL (ARRAY[${nonStopOverPoints}]) and target != ALL (ARRAY[${nonStopOverPoints}]))
+		</if>
+		<if test="nonStopOverLines != null and nonStopOverLines.length() &gt; 0">
+			AND gid != ALL(array[${nonStopOverLines}])
+		</if>
+			
+	</sql>
+	
+
+	<sql id="filters2">
+		COALESCE(gis_code, '') &lt;&gt; 'CA004'
+		AND COALESCE(gis_code, '') &lt;&gt; 'CA008'
+		AND COALESCE(ungr_loc, '') &lt;&gt; 'B'
+		<if test="bbox != null and bbox.length() &gt; 0">
+			AND ST_Intersects(the_geom, ST_GeomFromText('${bbox}', 5181))
+		</if>
+		<!-- if test="lglCd != null and lglCdType != null">
+			<choose>
+				<when test="lglCdType == 'sido'">
+					AND ST_Intersects(the_geom, ST_GeomFromText('${lglCdWkt}', 5181))
+				</when>
+				<when test="lglCdType == 'sgg'">
+					AND ST_Intersects(the_geom, ST_GeomFromText('${lglCdWkt}', 5181))
+				</when>
+				<when test="lglCdType == 'lgld'">
+					AND ST_Intersects(the_geom, ST_GeomFromText('${lglCdWkt}', 5181))
+				</when>
+			</choose>
+		</if>
+		<if test="polyWkt != null and polyWkt != ''">
+			AND ST_Intersects(the_geom, ST_GeomFromText('${polyWkt}', 5181))
+		</if -->
+				
+		<if test="nonStopOverPoints != null and nonStopOverPoints.length() &gt; 0">
+			AND (source != ALL (ARRAY[${nonStopOverPoints}]) and target != ALL (ARRAY[${nonStopOverPoints}]))
+		</if>
+		<if test="nonStopOverLines != null and nonStopOverLines.length() &gt; 0">
+			AND gid != ALL(array[${nonStopOverLines}])
+		</if>
+		
+		AND (
+			(
+				<if test='sysClf == "BOTH"'>
+					sys_clf IN ('SK', 'HT')
+				</if>
+				<if test='sysClf != "BOTH"'>
+					sys_clf = '${sysClf}'
+				</if>
+				<if test="capacity != null and capacity &gt; 0">
+					AND (use_core_cnt / CASE WHEN core_cnt=0 THEN 1 ELSE core_cnt END * 100) &lt;= ${capacity}
+					AND core_cnt &gt; 0
+				</if>
+				<if test="remainCapacity != null and remainCapacity &gt; 0">
+					AND (core_cnt - use_core_cnt) &gt;= ${remainCapacity}
+				</if>
+				<if test="coreCount != null and coreCount &gt; 0">
+					AND core_cnt &gt;= ${coreCount}
+				</if>
+				
+				<if test="sktBbring == 1">
+					AND skt_bbring &gt;= 1
+				</if>
+				<if test="sktCtring == 1">
+					AND skt_ctring &gt;= 1
+				</if>
+				<if test="sktBsring == 1">
+					AND skt_bsring &gt;= 1
+				</if>
+				<if test="sktRfptp == 1">
+					AND skt_rfptp &gt;= 1
+				</if>
+				<if test="sktEtc == 1">
+					AND skt_etc &gt;= 1
+				</if>
+				<if test="skbRing == 1">
+					AND skb_ring &gt;= 1
+				</if>
+				
+				<if test="ungrLocsArr != null and ungrLocsArr.length &gt; 0">
+					AND ungr_loc IN
+					<foreach collection="ungrLocsArr" item="item" separator=","
+						close=")" open="(">
+						'${item}'
+					</foreach>
+				</if>
+				<if test="netClfsArr != null and netClfsArr.length &gt; 0">
+					AND (
+					net_clf IN
+					<foreach collection="netClfsArr" item="item" separator=","
+						close=")" open="(">
+						'${item}'
+					</foreach>
+					OR
+					net_clf is null
+					)
+				</if>
+			)
+			<choose>
+				<when test="gisCodesArr != null and gisCodesArr.length &gt; 0">
+					OR gis_code = 'CN002'
+				</when>
+				<otherwise>
+					AND COALESCE(gis_code, '') &lt;&gt; 'CN002'
+				</otherwise>
+			</choose>
+		)	
+		
+			
+	</sql>
+	
+	<select id="getLglWkt" parameterType="KroutingVO" resultType="String">
+		select st_astext(the_gom) from
+		<choose>
+			<when test="lglCdType == 'sido'">
+				gcmm_sido_gm where sido_cd = '${lglCd}'
+			</when>
+			<when test="lglCdType == 'sgg'">
+				gcmm_sgg_gm where sgg_cd = '${lglCd}'
+			</when>
+			<when test="lglCdType == 'lgld'">
+				gcmm_lgld_gm where lgl_cd = '${lglCd}'
+			</when>
+		</choose>
+	</select>
+	
+	<select id="getDemandInfos" parameterType="java.lang.String" resultType="java.util.Map">
+		select gid, COALESCE(bd_name, '') as bd_name,
+			addr_sido || ' ' || sigungu || ' ' || law_dong ||
+				CASE WHEN length(COALESCE(law_li, '')) > 0 THEN ' ' || law_li ELSE '' END ||
+				CASE WHEN length(COALESCE(jibun_bon, '')) > 0 THEN ' ' || jibun_bon ELSE '' END ||
+				CASE WHEN length(COALESCE(jibun_bu, '')) > 0 THEN '-' || jibun_bu ELSE '' END
+			AS address
+		from tcp_inbd_info
+		where gid in (${value});
+	</select>
+</mapper>

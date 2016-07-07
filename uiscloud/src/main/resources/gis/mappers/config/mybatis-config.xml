@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- 마이바티스의 작동 규칙정의 -->
+	<settings>
+	  <setting name="cacheEnabled" value="false"/>
+	  <setting name="useGeneratedKeys" value="false"/>
+	  <setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
+	<typeAliases>
+		<typeAlias alias="commonCodeMasterVO" type="org.uiscloud.gis.com.service.CommonCodeMasterVO" />
+		<typeAlias alias="lglCdVO" type="org.uiscloud.gis.com.service.LglCdVO" />
+		
+		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		
+		<typeAlias alias="gotcCaVO" type="org.uiscloud.gis.mapsv.service.GotcCaVO" />
+		<typeAlias alias="gotcCdVO" type="org.uiscloud.gis.mapsv.service.GotcCdVO" />
+		<typeAlias alias="gotcJpVO" type="org.uiscloud.gis.mapsv.service.GotcJpVO" />
+		<typeAlias alias="gotcMhVO" type="org.uiscloud.gis.mapsv.service.GotcMhVO" />
+		<typeAlias alias="gotcTpoVO" type="org.uiscloud.gis.mapsv.service.GotcTpoVO" />
+		<typeAlias alias="ringVO" type="org.uiscloud.gis.mapInfo.service.RingVO" />
+		<typeAlias alias="eteLinkVO" type="org.uiscloud.gis.mapsv.service.EteLinkVO" />
+		<typeAlias alias="tlSpbdBuld11000VO" type="org.uiscloud.gis.mapsv.service.TlSpbdBuld11000VO" />
+
+		<typeAlias alias="spatialCommonVO" type="org.uiscloud.gis.mapsv.service.SpatialCommonVO" />
+		<typeAlias alias="spatialInfoVO" type="org.uiscloud.gis.mapsv.service.SpatialInfoVO" />
+		<typeAlias alias="spatialMetaInfoVO" type="org.uiscloud.gis.mapsv.service.SpatialMetaInfoVO" />		    		
+	    
+	    <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	    <typeAlias alias="LayerTreeVO" type="org.uiscloud.gis.mapsv.service.LayerTreeVO" />
+    	    
+	    <typeAlias alias="FacilityVO" type="org.uiscloud.gis.mapInfo.service.FacilityVO" />
+	    <typeAlias alias="SearchFacilityByUnqMgnoVO" type="org.uiscloud.gis.mapInfo.service.SearchFacilityByUnqMgnoVO" />
+	    <typeAlias alias="MapInfoSearchVO" type="org.uiscloud.gis.mapInfo.service.MapInfoSearchVO" />
+	    <typeAlias alias="MapInfoCaSearchVO" type="org.uiscloud.gis.mapInfo.service.MapInfoCaSearchVO" />
+	    <typeAlias alias="MapInfoTpoSearchVO" type="org.uiscloud.gis.mapInfo.service.MapInfoTpoSearchVO" />
+	    <typeAlias alias="MapInfoJpSearchVO" type="org.uiscloud.gis.mapInfo.service.MapInfoJpSearchVO" />
+	    <typeAlias alias="MapInfoMhSearchVO" type="org.uiscloud.gis.mapInfo.service.MapInfoMhSearchVO" />
+	    <typeAlias alias="MapInfoCdSearchVO" type="org.uiscloud.gis.mapInfo.service.MapInfoCdSearchVO" />
+	    <typeAlias alias="MapInfoVO" type="org.uiscloud.gis.mapInfo.service.MapInfoVO" />
+	    <typeAlias alias="RingSearchVO" type="org.uiscloud.gis.mapInfo.service.RingSearchVO" />
+	    <typeAlias alias="RingVO" type="org.uiscloud.gis.mapInfo.service.RingVO" />
+	    
+	    <typeAlias alias="SpbdEntrcVO" type="org.uiscloud.gis.mapInfo.service.SpbdEntrcVO" />
+	    <typeAlias alias="SpotCntcVO" type="org.uiscloud.gis.mapInfo.service.SpotCntcVO" />
+	    <typeAlias alias="SpbdBuldVO" type="org.uiscloud.gis.mapInfo.service.SpbdBuldVO" />
+	    
+	    <typeAlias alias="InteractiveVO" type="org.uiscloud.gis.interactiveUi.service.InteractiveVO" />		
+	    		
+		<typeAlias alias="bbsSearchVO" type="org.uiscloud.gis.bbs.service.BbsDefaultVO"/>
+		<typeAlias alias="bbsTailSearchVO" type="org.uiscloud.gis.bbsTail.service.BbsTailDefaultVO"/>
+		
+		<typeAlias alias="RoutingVO" type="org.uiscloud.gis.routing.service.RoutingVO" />
+		<typeAlias alias="KroutingVO" type="org.uiscloud.gis.routing.service.KroutingVO" />
+		<typeAlias alias="AroutingVO" type="org.uiscloud.gis.routing.service.AroutingVO" />
+		<typeAlias alias="EdgeVo" type="org.uiscloud.gis.routing.service.EdgeVo" />
+		<typeAlias alias="TargetParam" type="org.uiscloud.gis.routing.web.TargetParam" />
+
+		<typeAlias alias="bookmarkSearchVO" type="org.uiscloud.gis.bookmark.service.BookmarkSearchVO" />
+		<typeAlias alias="bookmarkVO" type="org.uiscloud.gis.bookmark.service.BookmarkVO" />
+				
+		<typeAlias alias="MemberSearchVO" type="org.uiscloud.gis.member.service.MemberSearchVO"/>
+		<typeAlias alias="MemberVO" type="org.uiscloud.gis.member.service.MemberVO"/>
+		
+		<typeAlias alias="UserAdminVO" type="org.uiscloud.gis.admin.service.UserAdminVO"/>
+		<typeAlias alias="LayerMNGAdminVO" type="org.uiscloud.gis.admin.service.LayerMNGAdminVO"/>
+		
+	</typeAliases>
+</configuration>

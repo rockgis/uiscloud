@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    	http://www.springframework.org/schema/jee 
+        http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+	
+	<!-- PostgreSQL JDBC setting -->
+	<bean id="gisDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" >
+		<property name="driverClass" value="${jdbc.driverClass}" />
+		
+		<property name="url" value="${jdbc.url}" />
+		<!--  
+		<property name="url" value="${jdbc.url}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />-->
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<alias name="gisDataSource" alias="dataSource"/>
+	
+	<!-- PostgreSQL JDBC setting -->
+	<bean id="kariosDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource" >
+	
+	    <property name="driverClass" value="kr.co.realtimetech.kairos.jdbc.kairosDriver"/>
+        <property name="url" value="jdbc:kairos://uiscloud.iptime.org:5000/kdb" />
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>		
+	</bean>
+	
+	<alias name="kariosDataSource" alias="kariosDataSource"/>
+
+</beans>

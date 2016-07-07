@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+	
+	<default-servlet-handler/>
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
+	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="org.uiscloud">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
+
+	<beans:bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<beans:property name="defaultErrorView" value="com/egovError" />
+		<beans:property name="exceptionMappings">
+			<beans:props>
+				<beans:prop key="org.springframework.dao.DataAccessException">com/dataAccessFailure</beans:prop>
+				<beans:prop key="org.springframework.transaction.TransactionException">com/transactionFailure</beans:prop>
+				<beans:prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">com/egovBizException</beans:prop>
+				<beans:prop key="org.springframework.security.AccessDeniedException">com/accessDenied</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+	<!-- For Pagination Tag -->
+	<beans:bean id="imageRenderer" class="org.uiscloud.gis.com.web.EgovImgPaginationRenderer" />
+
+	<beans:bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+		<beans:property name="rendererType">
+			<beans:map>
+				<beans:entry key="image" value-ref="imageRenderer" />
+			</beans:map>
+		</beans:property>
+	</beans:bean>
+	
+	<beans:bean id="jacksonJsonView" name="jacksonJsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+	<!-- /For Pagination Tag -->
+	
+	<!-- Temp -->
+<!--
+ 	<view-controller path="nits/subscription" view-name="nits/subscription/list.tpml" />
+	<view-controller path="nits/project" view-name="nits/project/list.tpml" />
+ -->	
+	
+	<view-controller path="gisExpert" view-name="bies/gisExpert" />
+	<!-- Temp -->
+</beans:beans>

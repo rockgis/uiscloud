@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+    SQL File Name : UserAdmin.xml
+    Description : 회원정보 관리
+
+    Modification Information
+    수정일            수정자         Version         Query Id
+    2016.06.01   	이경찬        	1.0             최초생성
+--><!--Converted at: Tue May 20 09:43:10 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userAdminDAO">
+    <select id="select" parameterType="UserAdminVO" resultType="UserAdminVO">
+		SELECT cnt_id, user_id, pwd, user_role, user_region, user_name, email, 
+		       status, create_datetime, role_name, agt_cd, dept, dept_type, 
+		       grp_id
+		FROM uiscloud_user
+    </select>
+        
+    <insert id="insert" parameterType="UserAdminVO">
+        INSERT INTO uiscloud_user(
+	            user_id, pwd, user_role, user_region, user_name, email, 
+	            status, role_name, agt_cd, dept, dept_type, 
+	            grp_id)
+	    VALUES (
+		    #{userId, jdbcType=VARCHAR},
+		    #{pwd, jdbcType=VARCHAR},
+		    #{userRole, jdbcType=INTEGER},
+		    #{userRegion, jdbcType=INTEGER},
+		    #{userName, jdbcType=VARCHAR},
+		    #{email, jdbcType=VARCHAR},
+		    #{status, jdbcType=INTEGER},
+		    #{roleName, jdbcType=VARCHAR},
+		    #{agtCd, jdbcType=VARCHAR},
+		    #{dept, jdbcType=VARCHAR},
+		    #{deptType, jdbcType=VARCHAR},
+		    #{grpId, jdbcType=VARCHAR}
+	    )
+    </insert>
+    
+    <update id="update" parameterType="UserAdminVO">
+        UPDATE uiscloud_user
+			SET 
+			user_id=#{userId, jdbcType=VARCHAR},
+			user_role=#{userRole, jdbcType=INTEGER},
+			user_region=#{userRegion, jdbcType=INTEGER},
+			user_name=#{userName, jdbcType=VARCHAR},
+			email=#{email, jdbcType=VARCHAR},
+			status=#{status, jdbcType=INTEGER},
+			role_name=#{roleName, jdbcType=VARCHAR},
+			agt_cd=#{agtCd, jdbcType=VARCHAR}, 
+		    dept=#{dept, jdbcType=VARCHAR},
+		    dept_type=#{deptType, jdbcType=VARCHAR},
+		    grp_id=#{grpId, jdbcType=VARCHAR}
+		WHERE 
+			cnt_id = #{cntId, jdbcType=INTEGER}
+        
+    </update>
+
+    <delete id="delete" parameterType="UserAdminVO">
+        DELETE FROM uiscloud_user
+ 		WHERE cnt_id = #{cntId, jdbcType=INTEGER}
+    </delete>
+    
+</mapper>

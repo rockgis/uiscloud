@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon May 19 13:26:13 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bbsDAO">	
+	<resultMap id="bbs" type="org.uiscloud.gis.bbs.service.BbsVO">
+		<result property="bbsId" column="CNT_ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="creator" column="CREATOR"/>
+		<result property="fileName" column="ORI_FILE_NAME"/>
+		<result property="fileSeq" column="FILE_SEQ"/>
+		<result property="newFileName" column="NEW_FILE_NAME"/>
+		<result property="viewCount" column="VIEW_COUNT"/>
+		<result property="createDatetime" column="CREATE_DATETIME"/>
+		<result property="pwd" column="PWD"/>
+		<result property="tailCount" column="TAIL_COUNT"/>
+	</resultMap>
+	
+	<insert id="insertBbs_S" parameterType="org.uiscloud.gis.bbs.service.BbsVO" useGeneratedKeys="true" keyProperty="bbsId">	
+		INSERT INTO BBS 
+			( 
+				TITLE
+			  , CONTENT
+			  , CREATOR
+			  , PWD
+			  <if test="bbsType != ''">
+			  , BBS_TYPE
+			  , START_DATE
+			  , END_DATE
+			  </if>
+			 )
+		VALUES (
+				#{title}
+			  , #{content}
+			  , #{creator}
+			  , #{pwd}
+			  <if test="bbsType != ''">
+			  , #{bbsType}
+			  , #{startDate}
+			  , #{endDate}
+			  </if>
+			   )	
+		<selectKey keyProperty="bbsId" resultType="integer" order="AFTER">
+			SELECT CURRVAL('bbs_cnt_id') AS "bbsId";
+		</selectKey>
+	</insert>
+	
+	<insert id="insertBbsFile" >	
+		
+		INSERT INTO BBS_FILE 
+			( 
+				ORI_FILE_NAME
+			  , NEW_FILE_NAME
+			  , BBS_ID
+			 )
+		VALUES
+		<foreach item="file" collection="list" open="(" separator="),(" close=")">
+				#{file.fileName}
+			  , #{file.newFileName}
+			  , #{file.bbsId}
+		</foreach>	
+	</insert>
+	
+	<update id="updateBbs_S">	
+		UPDATE BBS
+		SET CNT_ID=#{bbsId}
+			, TITLE=#{title}
+			, CONTENT=#{content}
+		  <if test="bbsType != ''">
+			, BBS_TYPE = #{bbsType}
+			, START_DATE = #{startDate}
+			, END_DATE = #{endDate}
+		   </if>
+		WHERE CNT_ID=#{bbsId}	
+	</update>
+	
+	<delete id="deleteBbs_S">	
+		DELETE FROM BBS
+		WHERE CNT_ID=#{bbsId}	
+	</delete>
+		
+	<delete id="deleteFile">	
+		DELETE FROM BBS_FILE
+		WHERE FILE_SEQ =#{fileSeq}	
+	</delete>
+	
+	<select id="selectBbs_S" resultMap="bbs">	
+		SELECT
+			CNT_ID
+			, TITLE
+			, CONTENT
+			, CREATOR
+			, VIEW_COUNT
+			, CREATE_DATETIME
+			, PWD	
+			, BBS_TYPE
+			, START_DATE
+			, END_DATE		
+			, (SELECT COUNT(*) FROM BBS_TAIL WHERE BBS_ID = #{bbsId}) AS TAIL_COUNT
+		FROM BBS
+		WHERE CNT_ID=#{bbsId}	
+	</select>
+		
+	<select id="selectBbsFile_D" resultMap="bbs">	
+		SELECT
+			  FILE_SEQ
+			, ORI_FILE_NAME
+			, NEW_FILE_NAME
+		FROM BBS_FILE
+		WHERE BBS_ID=#{bbsId}		
+		<if test="fileSeq != null and fileSeq !=''" >	
+		AND FILE_SEQ = #{fileSeq}			
+		</if>		
+		ORDER BY FILE_SEQ
+	</select>
+	<select id="selectBbsList_D" parameterType="bbsSearchVO" resultType="egovMap">
+		SELECT *
+		 FROM (
+			SELECT A.*, ROWNUM RNUM FROM (
+				SELECT
+						  row_number() over() as ROWNUM
+						, CNT_ID
+						, TITLE
+						, CONTENT
+						, CREATOR
+						, VIEW_COUNT
+						, CREATE_DATETIME
+						, PWD	
+						, START_DATE
+			  			, END_DATE					
+						, (SELECT COUNT(*) FROM BBS_TAIL WHERE BBS_ID = BBS.CNT_ID) AS TAIL_COUNT
+						, (SELECT COUNT(*) FROM BBS_FILE WHERE BBS_ID = BBS.CNT_ID) AS FILE_COUNT
+				FROM BBS
+				WHERE 1 = 1
+				<if test="searchCondition == 0">AND
+					TITLE LIKE '%' || #{searchKeyword} || '%'
+				</if>
+				<if test="searchCondition == 1">AND
+					CONTENT LIKE '%' || #{searchKeyword} || '%'
+				</if>
+				<if test="searchCondition == 2">AND
+					CREATOR LIKE '%' || #{searchKeyword} || '%'
+				</if>
+				<if test="bbsType != ''">
+					AND bbs_type = #{bbsType}
+				</if>
+				<if test="bbsType == ''">
+					AND bbs_type is null
+				</if>	
+				<if test="startDate != null and startDate != ''">
+					AND START_DATE &lt;= #{startDate}
+				</if>
+				<if test="endDate != null and endDate != ''">
+					AND END_DATE &gt;= #{endDate}
+				</if>	
+				ORDER BY CNT_ID DESC
+				LIMIT #{lastIndex}
+			) A
+			WHERE ROWNUM &lt;= #{lastIndex}
+		) B
+		WHERE RNUM &gt; #{firstIndex}	
+	</select>
+		
+	<select id="selectBbsListTotCnt_S" parameterType="bbsSearchVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM BBS
+		WHERE 1 = 1
+		<if test="searchCondition == 0">AND
+			TITLE LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 1">AND
+			CONTENT LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 2">AND
+			CREATOR LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="bbsType != ''">
+			AND bbs_type = #{bbsType}
+		</if>
+		<if test="bbsType == ''">
+		    AND bbs_type is null
+		</if>	
+	</select>
+		
+	<select id="selectBbsListTotCnt_S_for_admin" parameterType="bbsSearchVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM BBS
+		WHERE 1=1
+		<if test="searchCondition == 0">AND
+			TITLE LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 1">AND
+			CONTENT LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 2">AND
+			CREATOR LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="bbsType != ''">
+			AND bbs_type = #{bbsType}
+		</if>	
+	</select>
+	
+	<update id="updateViewCnt">	
+		UPDATE BBS
+		SET VIEW_COUNT = 
+			(SELECT MAX(VIEW_COUNT)+1 FROM BBS WHERE CNT_ID=#{bbsId})
+		WHERE CNT_ID=#{bbsId}	
+	</update>
+</mapper>

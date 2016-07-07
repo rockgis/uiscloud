@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+    SQL File Name : LayerTree.xml
+    Description : 지도의 레이어 트리 관리
+                  레이어 트리 관리는 Excel 파일을 통해 insert 문 생성 관리(전체 delete 후 insert)
+
+    Modification Information
+    수정일            수정자         Version         Query Id
+    2014.01.23   김종민        1.0               최초생성
+--><!--Converted at: Tue May 20 12:36:27 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="layerTreeDAO">
+    <resultMap id="LayerTreeVOResult" type="LayerTreeVO">
+        <result property="layerTreePk" column="layer_tree_pk"/>
+        <result property="groupName" column="group_name"/>
+        <result property="korName" column="kor_name"/>
+        <result property="layerName" column="layer_name"/>
+        <result property="symbolizer" column="symbolizer"/>
+        <result property="tableName" column="table_name"/>
+        <result property="conditionField" column="condition_field"/>
+        <result property="condition" column="condition"/>
+        <result property="used" column="used"/>
+        <result property="parentPk" column="parent_pk"/>
+        <result property="treeOrder" column="tree_order"/>
+        <result property="treeDepth" column="tree_depth"/>
+        <result property="displayLevel" column="display_level"/>
+        <result property="opened" column="opened"/>
+        <result property="checked" column="checked"/>
+        <result property="searchRequiredFieldsType" column="search_required_fields_type"/>
+    </resultMap>
+        
+	<!-- 
+	쿼리명 : selectAll
+	설명 : 레이어 트리 전체 조회
+	작성자 : 김종민
+	최초작성일 : 2014.01.23
+	-->
+    <select id="selectAll" resultMap="LayerTreeVOResult">
+		SELECT 
+			  layer_tree_pk
+		    , '' as group_name
+		    , kor_name
+		    , layer_name
+		    , symbolizer
+		    , table_name
+		    , condition_field
+		    , condition
+		    , used
+		    , parent_pk
+		    , tree_order
+		    , tree_depth
+		    , display_level
+		    , opened
+		    , checked
+		    , search_required_fields_type
+		FROM uiscloud_layer_tree
+		WHERE used = true
+		ORDER BY tree_order
+    </select>
+    
+    <select id="selectAllU" resultMap="LayerTreeVOResult">
+		SELECT 
+			  layer_tree_pk
+		    , '' as group_name
+		    , kor_name
+		    , layer_name
+		    , symbolizer
+		    , table_name
+		    , condition_field
+		    , condition
+		    , used
+		    , parent_pk
+		    , tree_order
+		    , tree_depth
+		    , display_level
+		    , opened
+		    , checked
+		    , search_required_fields_type
+		FROM uiscloud_layer_tree
+		WHERE used = true
+		ORDER BY tree_order
+    </select>
+        
+	<!-- 
+	쿼리명 : selectAllFacilityKind
+	설명 : 부모명을 포함한 레이어 트리 전체 조회
+	작성자 : 김종민
+	최초작성일 : 2014.01.27
+	-->
+    <select id="selectAllFacilityKind" resultMap="LayerTreeVOResult">
+		SELECT 
+			  tb_child.layer_tree_pk
+		    , tb_parent.kor_name as group_name 
+			, tb_child.kor_name as kor_name
+		    , tb_child.layer_name
+		    , tb_child.symbolizer
+		    , tb_child.table_name
+		    , tb_child.condition_field
+		    , tb_child.condition
+		    , tb_child.used
+		    , tb_child.parent_pk
+		    , tb_child.tree_order
+		    , tb_child.tree_depth
+		    , tb_child.display_level
+		    , tb_child.opened
+		    , tb_child.checked
+		    , tb_child.search_required_fields_type
+		FROM uiscloud_layer_tree AS tb_child
+		JOIN uiscloud_layer_tree AS tb_parent
+		ON  tb_child.parent_pk = tb_parent.layer_tree_pk
+		WHERE tb_child.parent_pk &gt; 0
+		AND tb_child.used = true
+		ORDER BY tb_child.tree_order
+    </select>
+        
+	<!-- 
+	쿼리명 : selectFacilityKindBySearchRequiredFieldsTypes
+	설명 : 부모명을 포함한 레이어 트리 중 Bitwise And 연산에서 0 보다 큰 결과 전체 조회
+	작성자 : 김종민
+	최초작성일 : 2014.01.27
+	-->
+    <select id="selectFacilityKindBySearchRequiredFieldsTypes" parameterType="Integer" resultMap="LayerTreeVOResult">
+		SELECT 
+			  tb_child.layer_tree_pk
+		    , tb_parent.kor_name as group_name 
+			, tb_child.kor_name as kor_name
+		    , tb_child.layer_name
+		    , tb_child.symbolizer
+		    , tb_child.table_name
+		    , tb_child.condition_field
+		    , tb_child.condition
+		    , tb_child.used
+		    , tb_child.parent_pk
+		    , tb_child.tree_order
+		    , tb_child.tree_depth
+		    , tb_child.display_level
+		    , tb_child.opened
+		    , tb_child.checked
+		    , tb_child.search_required_fields_type
+		FROM uiscloud_layer_tree AS tb_child
+		JOIN uiscloud_layer_tree AS tb_parent
+		ON  tb_child.parent_pk = tb_parent.layer_tree_pk
+		WHERE tb_child.parent_pk &gt; 0
+		AND tb_child.used = true
+		/* Bitwise AND 연산 */
+		
+		AND tb_child.search_required_fields_type &amp; #{searchRequiredFieldsTypes} &gt; 0
+		
+		ORDER BY tb_child.tree_order
+    </select>
+    
+	<!-- 
+	쿼리명 : selectByPk
+	설명 : PK 기반 레이어 트리 한 건 조회(사용하지 않음)       
+	작성자 : 김종민
+	최초작성일 : 2014.01.23
+	-->    
+    <select id="selectByPk" parameterType="Integer" resultMap="LayerTreeVOResult">
+        
+                SELECT    
+                	  layer_tree_pk
+                    , '' as group_name
+		    		, kor_name
+                    , layer_name
+                    , symbolizer
+				    , table_name
+				    , condition_field
+				    , condition
+				    , used
+                    , parent_pk
+                    , tree_order
+                    , tree_depth
+		    		, display_level
+                    , opened
+                    , checked
+                    , search_required_fields_type
+                FROM    uiscloud_layer_tree
+               WHERE    layer_tree_pk = #{layerTreePk}
+        
+    </select>
+    
+	<!-- 
+	쿼리명 : selectChiledByParentPk
+	설명 : "PARENT_PK" 기반 하위 레이어 트리 조회
+	작성자 : 김종민
+	최초작성일 : 2013.10.25
+	-->    
+    <select id="searchChildsByParentPk" parameterType="LayerTreeVO" resultMap="LayerTreeVOResult">
+	
+               SELECT    
+              		  layer_tree_pk
+                    , '' as group_name
+    				, kor_name
+                    , layer_name
+                    , symbolizer
+				    , table_name
+				    , condition_field
+				    , condition
+				    , used
+                    , parent_pk
+                    , tree_order
+                    , tree_depth
+		    		, display_level
+                    , opened
+                    , checked
+                    , search_required_fields_type
+               FROM    uiscloud_layer_tree
+             WHERE     parent_pk = #{parentPk}
+	
+	</select>
+    
+	<!-- 
+	쿼리명 : insert
+	설명 : 레이어 트리 삽입(사용하지 않음)
+	작성자 : 김종민
+	최초작성일 : 2014.01.23
+	-->
+    <insert id="insert" parameterType="LayerTreeVO">
+        
+            INSERT INTO uiscloud_layer_tree 
+                (kor_name, layer_name, symbolizer, table_name, condition_field, condition, used, parent_pk, tree_order, tree_depth, display_level, opened, checked, search_required_fields_type) 
+            VALUES 
+                (#{korName}, #{layerName}, #{symbolizer}, #{tableName}, #{conditionField}, #{condition}, #{used}, #{parentPk}, #{treeOrder}, #{treeDepth}, #{displayLevel}, #{opened}, #{checked}, #{searchRequiredFieldsType})
+        
+        <selectKey keyProperty="layerTreePk" resultType="Integer">
+            
+                SELECT NVL(MAX(layer_tree_pk), 0) FROM uiscloud_layer_tree
+             
+        </selectKey>
+    </insert>
+
+	<!-- 
+	쿼리명 : update
+	설명 : 레이어 트리 수정(사용하지 않음)
+	작성자 : 김종민
+	최초작성일 : 2014.01.23
+	-->
+    <update id="update" parameterType="LayerTreeVO">
+        
+            UPDATE uiscloud_layer_tree
+            SET 
+                  kor_name      	= #{korName}
+                , layer_name    	= #{layerName}
+                , symbolizer    	= #{symbolizer}
+                , table_name    	= #{tableName}
+                , condition_field 	= #{conditionField}
+                , condition    		= #{condition}
+                , used    			= #{used}
+                , parent_pk     	= #{parentPk}
+                , tree_order    	= #{treeOrder}
+                , tree_depth    	= #{treeDepth}
+                , display_level		= #{displayLevel}
+                , opened        	= #{opened}
+                , checked			= #{checked}
+                , search_required_fields_type			= #{searchRequiredFieldsType}
+            WHERE layer_tree_pk = #{layerTreePk}
+        
+    </update>
+
+	<!-- 
+	쿼리명 : delete
+	설명 : 레이어 트리 삭제(사용하지 않음)
+	작성자 : 김종민
+	최초작성일 : 2014.01.23
+	-->
+    <delete id="delete" parameterType="Integer">
+        
+            DELETE 
+              FROM uiscloud_layer_tree
+            WHERE layer_tree_pk = #{layerTreePk}            
+        
+    </delete>
+    
+    <!-- 
+	쿼리명 : getTableName
+	설명 : 테이블명 가져오기
+	작성자 : 김종민
+	최초작성일 : 2014.03.17
+	-->
+    <select id="getTableName" parameterType="Integer" resultType="String">
+		SELECT 
+			  table_name
+		FROM uiscloud_layer_tree
+		WHERE layer_tree_pk = #{layerTreePk}
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue May 20 14:00:24 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="routingDAO">
+	<select id="route" parameterType="RoutingVO" resultType="String">
+		SELECT 
+			ST_SHORTESTPATH('spatest', 
+			ST_GEOMFROMTEXT('POINT(${startPoint})',0), 
+			ST_GEOMFROMTEXT('POINT(${endPoint})',0), 
+			link_id, 
+			link_type, 
+			start_node_id, 
+			end_node_id, 
+			bidirected, 
+			geometry, 
+			cost, 
+			rcost, 
+			start_node_rid, 
+			end_node_rid) 
+		from nw_link 
+	</select>
+	
+	<select id="routenode" parameterType="String" resultType="RoutingVO">
+           
+		
+		
+		
+	</select>
+	
+	
+</mapper>

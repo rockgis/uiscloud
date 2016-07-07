@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue May 20 09:25:27 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="common">
+    <resultMap id="commonCodeMasterVOResult" type="commonCodeMasterVO">
+        <result property="codeType" column="cd_type"/>
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="isUse" column="use_yn"/>
+        <result property="codeTypeName" column="code_desc"/>
+        <result property="superCode" column="main_code"/>
+    </resultMap>
+	
+    <resultMap id="lglCdVOResult" type="lglCdVO">
+        <result property="lglCd" column="lgl_cd"/>
+        <result property="name" column="name"/>
+        <result property="addr" column="addr"/>
+        <result property="managementHeadquartersCode" column="mgt_branch"/>
+        <result property="managementTeamCode" column="skt_region"/>
+        <result property="enterpriseCode" column="agt_cd"/>
+    </resultMap>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 공통 상세 코드 조회
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectCommonCodeMasterByCodeType" parameterType="String" resultMap="commonCodeMasterVOResult">
+		
+			select 
+				  cd_type 	/* 대분류코드 */	
+				, code 		/* 코드 */	
+				, name 		/* 코드명 */	
+				, use_yn 	/* 사용여부 */	
+				, code_desc /* 코드대분류 명칭 */	
+				, main_code /* 상위코드 */
+			from gscomc
+	      	where cd_type = #{codeType}
+	      	and use_yn = 'Y'
+	      	order by name
+		
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 공통 상세 코드 조회
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectCommonCodeMasterByCodeTypeAndSuperCode" parameterType="commonCodeMasterVO" resultMap="commonCodeMasterVOResult">
+		
+			select 
+				  cd_type 	/* 대분류코드 */	
+				, code 		/* 코드 */	
+				, name 		/* 코드명 */	
+				, use_yn 	/* 사용여부 */	
+				, code_desc /* 코드대분류 명칭 */	
+				, main_code /* 상위코드 */
+			from gscomc
+	      	where cd_type = #{codeType}
+	      	and main_code = #{superCode}
+	      	and use_yn = 'Y'
+	      	order by name
+		
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 시도 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectSido" resultMap="lglCdVOResult">
+			select 
+				  gid
+				, "CTPRVN_CD" 
+				, "CTP_ENG_NM" 
+				, "CTP_KOR_NM"
+			from 
+				tl_scco_ctprvn_11000
+			order by gid     
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 시군구 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectSggBySidoLglCd" parameterType="String" resultMap="lglCdVOResult">
+		select 
+			  gid
+			, "SIG_CD"
+			, "SIG_ENG_NM"
+			, "SIG_KOR_NM"
+		from 
+			tl_scco_sig_11000
+		where
+			"SIG_CD" like #{ctprvnCd} || '%'
+		order by "SIG_KOR_NM"     
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 읍면동 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectEmdlBySggLglCd" parameterType="String" resultMap="lglCdVOResult">
+		
+			select 
+				  gid
+				, emd_cd
+				, emd_eng_nm
+				, emd_kor_nm
+			from 
+				tl_scco_emd_11000
+			where
+				sig_cd = #{sigCd}
+			order by emd_kor_nm	     
+		
+	</select>
+</mapper>

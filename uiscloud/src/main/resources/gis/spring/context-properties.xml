@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<bean name="propertiesService" class="egovframework.rte.fdl.property.impl.EgovPropertyServiceImpl" destroy-method="destroy">
+
+		<property name="extFileName">
+			<set>
+				<map>
+					<entry key="encoding" value="UTF-8" />
+					<entry key="filename" value="file:./src/**/refresh-resource.properties" />
+				</map>
+				<value>classpath*:properties/resource.properties</value>
+			</set>
+		</property>
+
+		<property name="properties">
+			<map>
+				<!-- 페이징 -->
+				<entry key="pageUnit" value="5" />
+				<entry key="pageSize" value="3" />
+				
+				<!-- routing -->
+				<entry key="buffer" value="30" />
+			</map>
+		</property>
+
+	</bean>
+</beans>	

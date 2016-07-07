@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue May 20 10:11:04 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spatialInfoDAO">
+	<select id="selectSpatialMetaTable" resultType="spatialMetaInfoVO">
+		SELECT TABLE_NAME AS tableName, KOR_NAME AS korName
+		FROM T_TABLE_INFO
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="tableName != null">
+				TABLE_NAME = #{tableName}
+			</if>
+
+			<if test="tableType != null">
+				AND TABLE_TYPE = #{tableType}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="selectSpatialMetaColumn" parameterType="String" resultType="spatialMetaInfoVO">
+		SELECT field, alias, title, type, width, halign, align, sortable, hidden
+		FROM T_COLUMN_INFO
+		<if test="value != null">
+			WHERE TABLE_NAME = #{value}
+		</if>
+		ORDER BY TABLE_NAME, SEQ
+	</select>
+	
+	<sql id="selectCommon">
+		GID AS gid, 
+		UNQ_MGNO AS unqMgno, 
+		FCTS_NM AS fctsNm, 
+		CNST_MGNO AS cnstMgno, 
+		(SELECT ADDR FROM AREA_TEMP_MST WHERE LGL_CD = T1.LGL_CD) AS lglNm,
+		(SELECT GIS_NAME FROM T_GISCODE_INFO WHERE GIS_CODE = T1.GIS_CODE) AS gisNm
+	</sql>
+	
+	<sql id="whereCommon">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="gid != null">
+				GID = #{gid}
+			</if>
+
+			<if test="gids != null">
+				AND GID IN
+				<foreach collection="gids" item="gid" index="index" open="(" close=")" separator=",">
+					#{gid}
+				</foreach>
+			</if>
+
+			<if test="lon != 0.0">
+				AND ST_DWithin(the_geom, ST_GeomFromText('POINT(${lon} ${lat})', 5179), #{dist})
+			</if>
+
+			<if test="polyGeom != null">
+				AND ST_Intersects(the_geom, ST_GeomFromText('${polyGeom}', 5179))
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="selectGotcCa" parameterType="spatialInfoVO" resultType="GotcCaVO">
+		SELECT
+			<include refid="spatialInfoDAO.selectCommon"/>,
+			
+			round(use_core_cnt / CASE WHEN core_cnt=0 THEN 1 ELSE core_cnt END * 100) || '%' as useCoreGrade,
+			 
+			COMP_LEN AS compLen,
+			CORE_CNT AS coreCnt,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf,
+			USE_CORE_CNT AS useCoreCnt
+		FROM GOTC_CA T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+	</select>
+	
+	<select id="selectGotcCd" parameterType="spatialInfoVO" resultType="GotcCdVO">
+		SELECT
+			<include refid="spatialInfoDAO.selectCommon"/>,
+			COMP_LEN AS compLen,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '323' AND CODE = T1.DIG_MTHD) AS digMthd,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '322' AND CODE = T1.LQT_MT) AS lqtMt,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf
+		FROM GOTC_CD T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+	</select>
+	
+	<select id="selectGotcJp" parameterType="spatialInfoVO" resultType="GotcJpVO">
+		SELECT
+			<include refid="spatialInfoDAO.selectCommon"/>,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '491' AND CODE = T1.JP_CLF) AS jpClf,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf
+		FROM GOTC_JP T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+	</select>
+	
+	<select id="selectGotcMh" parameterType="spatialInfoVO" resultType="GotcMhVO">
+		SELECT
+			<include refid="spatialInfoDAO.selectCommon"/>,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '201' AND CODE = T1.MH_STD) AS mhStd,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf
+		FROM GOTC_MH T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+	</select>
+	
+	<select id="selectGotcTpo" parameterType="spatialInfoVO" resultType="GotcTpoVO">
+		SELECT
+			<include refid="spatialInfoDAO.selectCommon"/>,
+			ADDR AS addr,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '302' AND CODE = T1.CLIENT_CD) AS clientCd
+		FROM GOTC_TPO T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+	</select>
+	
+	<select id="selectSktRingMap" parameterType="spatialInfoVO" resultType="ringVO">
+		SELECT
+			  net_no
+			, net_type
+			, net_nm
+			, count(*) AS countCable /* 참여 케이블 수 */
+			, (SELECT count(*) FROM ring_point AS rp WHERE rp.net_no = tmp.net_no) AS countTpo /* 참여 국소수 */
+			, sum(skta) AS sumLengthSKTA /* SKT 가공 포설거리 합 */
+			, sum(sktd) AS sumLengthSKTD /* SKT 지중 포설거리 합 */
+			, sum(skba) AS sumLengthSKBA /* SKB 가공 포설거리 합 */
+			, sum(skbd) AS sumLengthSKBD /* SKB 지중 포설거리 합 */
+			, sum(corering_len) AS sumCoreringLen /* 코어링 추정 합 */
+			, sum(copole_len) AS sumCopoleLen /* 동일 전주 추정 합 */
+		FROM (	
+			SELECT 
+				  net_no
+				, net_type
+				, net_nm
+				, CASE WHEN gc.sys_clf || '_' || gc.ungr_loc = 'SK_A' THEN comp_len ELSE 0 END AS skta
+				, CASE WHEN gc.sys_clf || '_' || gc.ungr_loc = 'SK_D' THEN comp_len ELSE 0 END AS sktd
+				, CASE WHEN gc.sys_clf || '_' || gc.ungr_loc = 'HT_A' THEN comp_len ELSE 0 END AS skba
+				, CASE WHEN gc.sys_clf || '_' || gc.ungr_loc = 'HT_D' THEN comp_len ELSE 0 END AS skbd
+				, corering_len
+				, copole_len
+				FROM gnet_ring_map AS srm
+			JOIN (
+				SELECT ca_mgno, sys_clf, ungr_loc, comp_len
+				FROM gotc_ca
+			) AS gc
+			ON srm.ca_mgno = gc.ca_mgno
+			WHERE srm.net_no in (
+				SELECT net_no
+				FROM gnet_ring_map
+				<include refid="spatialInfoDAO.whereCommon"/>
+			)				
+		) AS tmp
+		GROUP BY net_no, net_type, net_nm
+		ORDER BY net_nm
+	</select>
+
+	<select id="selectEteLink" parameterType="spatialInfoVO" resultType="eteLinkVO">
+		SELECT
+			UP_STA_MGNO,
+			UP_STA_NAME,
+			UP_STA_RACK,
+			UP_STA_SHELF,
+			UP_STA_PORT,
+			TO_TP,
+			TO_TP_NAME,
+			DN_STA_RACK,
+			DN_STA_SHELF,
+			DN_STA_PORT,
+			MAX(SEQ) AS MAX_SEQ,
+			USE_YN
+		FROM ETE_LINK T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+		AND GIS_CODE = 'ETE02'
+		GROUP BY up_sta_mgno, up_sta_name, up_sta_rack, up_sta_shelf, up_sta_port, to_tp, to_tp_name, dn_sta_rack, dn_sta_shelf, dn_sta_port, use_yn
+	</select>
+	
+	<select id="selectEteLinkDetail" parameterType="spatialInfoVO" resultType="eteLinkVO">
+		SELECT
+			GID,
+			UP_STA_MGNO,
+			UP_STA_NAME,
+			UP_STA_RACK,
+			UP_STA_SHELF,
+			UP_STA_PORT,
+			FR_CA_CORE,
+			TO_TP,
+			TO_TP_NAME,
+			DN_STA_RACK,
+			DN_STA_SHELF,
+			DN_STA_PORT,
+			TO_CA_CORE,
+			USE_YN
+		FROM ETE_LINK T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+		AND GIS_CODE = 'ETE02'
+		LIMIT 1
+	</select>
+	
+	<select id="selectTlSpbdBuld11000" parameterType="spatialInfoVO" resultType="tlSpbdBuld11000VO">
+		SELECT
+			  gid,
+			  bdtyp_cd,
+			  bd_mgt_sn,
+			  bsi_int_sn,
+			  bsi_zon_no,
+			  buld_mnnm,
+			  buld_nm,
+			  buld_nm_dc,
+			  buld_se_cd,
+			  buld_slno,
+			  bul_dpn_se,
+			  bul_eng_nm,
+			  bul_man_no,
+			  emd_cd,
+			  eqb_man_sn,
+			  gro_flo_co,
+			  li_cd,
+			  lnbr_mnnm,
+			  lnbr_slno,
+			  mntn_yn,
+			  mvmn_de,
+			  mvmn_resn,
+			  mvm_res_cd,
+			  ntfc_de,
+			  opert_de,
+			  pos_bul_nm,
+			  rds_man_no,
+			  rn_cd,
+			  sig_cd,
+			  und_flo_co
+		FROM TL_SPBD_BULD_11000 T1
+		<include refid="spatialInfoDAO.whereCommon"/>
+	</select>
+	
+
+</mapper>

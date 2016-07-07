@@ -1,0 +1,191 @@
+@CHARSET "UTF-8";
+
+/* 전체 화면 스타일 */
+h4 { padding:5px 0px 0px 10px; }
+a, img {
+	border : 0;
+	outline : none;
+	text-decoration: none;
+}
+body {
+	overflow : hidden;
+	margin: 0 auto;
+}
+
+li { list-style-type: none; }
+
+/* 전체화면 스타일 */
+#div_layout { position:relative;width:100%;height:100%;min-width:1280px;min-height:560px; }
+
+/* 상단 메뉴 스타일 */
+#div_north { min-height:45px; height:45px; overflow:hidden; clear:both; }
+#span_logo { float:left; padding-top:3px; }
+#ul_menu { float:left; padding-top:5px; margin-left:80px; }
+#ul_menu li { float:left; margin-left:5px; }
+
+/* 왼쪽 메뉴 스타일 */
+#div_west { width:305px; position:relative; display:none; }
+#div_view { width:100%; height:100%; }
+
+/* 레이어 */
+#div_mapInfo_menu { margin-left:2px;height:100% }
+.panel100 {height:100% }
+/* 가운데 지도 창 */
+#div_map { position:absolute; z-index:1; width:100%; height:100%; }
+
+/* 오른쪽 메뉴 스타일 */
+#div_east { width:300px; display:none; }
+
+/* 하단 메뉴 스타일 */ 
+#div_south { display:none; height: 200px; overflow: hidden; }
+
+/* 검색 */
+.div_ser ul { margin-left:0px; }
+.div_ser .span_tit { display:inline-block; width:80px; vertical-align: top; }
+.div_ser .span_content { display: inline-block; }
+
+/* 검색 그리드 툴바 */
+#div_serGridToolbar a { display:inline; }
+#div_serGridToolbar input { display:inline; }
+
+/* 중앙 화면 스타일 */
+#div_center { position:relative; }
+#ul_map_tool { position: absolute; top: 25px; right: 70px; z-index: 999;display: none; }
+#ul_map_tool li { float:left; margin-left:5px; }
+#ul_map_drawTool { position: absolute; top: 60px; right: 70px; z-index: 999;display: none; }
+#ul_map_drawTool li { float:left; margin-left:5px; }
+#ul_map_editTool { position: absolute; top: 95px; right: 70px; z-index: 999;display: none; }
+#ul_map_editTool li { float:left; margin-left:5px; }
+
+/* AJAX Loading */
+#loadingBar { position:absolute; top:0; left:0; width:100%; height:100%; text-align:center; margin:0 auto; z-index:1}
+#loadingBar div { position:absolute; top:50%; left:50%; z-index:2;}
+
+/* 링크 버튼 정의 */
+a.button {
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #000;
+    position: relative;
+    padding-top: 3px;
+    padding-left: 18px;
+    padding-right: 18px;
+    height: 24px;
+    width: auto;
+    text-align: center;
+    vertical-align: middle;
+    background-image: url('../images/btn/button_bg.png');
+    cursor: pointer;
+}
+/* 링크 버튼 정의 - 왼쪽 */
+a.button span.left {
+    position: absolute;
+    background: url('../images/btn/button_bg_l.png') no-repeat 0 100%;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left:0px;
+    cursor: pointer;
+}
+/* 링크 버튼 정의 - 오른쪽 */
+a.button span.right {
+    position: absolute;
+    background: url('../images/btn/button_bg_r.png') no-repeat 0 100%;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left:100%;
+    cursor: pointer;
+}
+/* 링크 버튼 정의 - 오버시 백그라운 변경 */
+a:hover.button {
+    background-image: url('../images/btn/button_bg_over.png');
+}
+a:hover.button span.left {
+    background: url('../images/btn/button_bg_over_l.png') no-repeat 0 100%;
+}
+a:hover.button span.right {
+    background: url('../images/btn/button_bg_over_r.png') no-repeat 0 100%;
+}
+
+/* 공통 설정 */
+.hide { display:none; }
+.searchForm .inputText { width: 185px; font-size: 12px; ime-mode: active; }
+
+.overflowXhidden { overflow-x: hidden  }
+#table_info { overflow-x: hidden; width: 280px }
+
+/* 단일경로 설정 */
+#div_pgRouting_search ul li span.span_tit { display: inline-block; width: 140px;}
+#div_pgRouting_search ul li span .inputText { width: 125px; font-size: 12px;}
+.cableTypeName { display: inline-block; width: 80px; }
+
+/* 다중경로 설정 */
+#div_kRouting_search ul li span.span_tit { display: inline-block; width: 140px;}
+#div_kRouting_search ul li span .inputText { width: 125px; font-size: 12px;}
+
+/* Mass Simulation 설정 */
+#div_aRouting_search ul li span.span_tit { display: inline-block; width: 140px;}
+#div_aRouting_search ul li span .inputText { width: 125px; font-size: 12px;}
+
+#div_aRouting_bookmark ul li span.span_tit { display: inline-block; width: 140px;}
+#div_aRouting_bookmark ul li span .inputText { width: 125px; font-size: 12px;}
+
+#div_bookmarkRoute ul li span.span_tit { display: inline-block; width: 140px;}
+#div_bookmarkRoute ul li span .inputText { width: 125px; font-size: 12px;}
+
+/* 검색 필터 구분을 위해 border top 적용 */
+.searchForm ul li .span_tit {
+	padding-top: 4px;
+	border-top: 1px solid #94BFFF;
+}
+
+/* 시설물 상세 검색 필터 숨김 */
+.facility { display: none; }
+
+
+/* 검색 필터 필수 항목 */
+.required_filter { color: red; font-weight: bold; }
+
+/* 검색 필터 체크박스 & 라디오 줄 당 2개씩 정렬 */
+.span_2_layout { display: inline-block; width: 90px; }
+
+.skt_color { color: #ff0000; }
+.skb_color { color: #0000ff; }
+
+/* 아코디언 선택 - 폰트 하이라이팅 */
+.accordion .accordion-header-selected .panel-title{
+	font-weight:bold;
+	color:#2779AA;
+}
+
+#frmUploadBookmark .searchForm ul li span.span_tit {
+	width: 90px;
+}
+
+.gurobiSel1 {
+	display: none;
+}
+
+.gurobiSel2 {
+	display: none;
+}
+
+.gurobiSel3 {
+	display: none;
+}
+
+.gurobiSel4 {
+	display: none;
+}
+
+.gurobiSel5 {
+	display: none;
+}
+
+/* 동적SLD Style  */
+#dynamicSldWindow { display:none; }
+.div_dynamic .span_tit { display:inline-block; width:80px; vertical-align: middle; margin-left:3px; }
+.div_opacity { position:relative; width:200px; margin:5px 0px 5px 90px; height:20px; }
+
+#div_mapInfo_layer {padding-bottom: 5px;}

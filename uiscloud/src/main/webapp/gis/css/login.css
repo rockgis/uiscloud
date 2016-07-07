@@ -1,0 +1,61 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#container {
+	width: 376px;
+	height: 286px;
+	
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -188px;
+	margin-top: -143px;	
+}	
+	
+#frmLogin {
+	height: 66px;
+	padding: 15px 10px;
+	background-color: #FAFAFA;
+}
+
+input {
+	margin-left: 5px;
+	height: 29px;
+	width: 200px;
+	border: solid 1px #C6C9CC;
+}
+
+#divPW {
+	margin-top: 4px;
+}
+
+#submit {
+	float: right;
+}
+
+#ul_menu {
+	margin: 0;
+	text-align: center;
+}
+
+#ul_menu li {
+	margin: 20px 10px;
+	display: inline-block;
+}
+
+#ul_menu a {
+	text-decoration: none;
+	width: 100px;
+}
+
+.loginFailed {	
+    text-align: center;
+    color: red;
+    font-size: 20px;
+    margin-bottom: 50px;
+    font-weight: bolder;
+    background-color: #FFFFAA;
+    padding: 20px;	
+}

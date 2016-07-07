@@ -1,0 +1,7 @@
+.title { 
+	display: inline-block;
+	width: 600px; 
+	text-overflow: ellipsis; 
+	white-space: nowrap; 
+	overflow: hidden; 
+}

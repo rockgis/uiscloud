@@ -1,0 +1,161 @@
+layerList: [{
+    "layerTreePk": "광케이블",
+    "korName": "광케이블",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "광케이블(T_가공)",
+        "korName": "광케이블(T_가공)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(T_지중)",
+        "korName": "광케이블(T_지중)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(T_임차)",
+        "korName": "광케이블(T_임차)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(T_FTTH)",
+        "korName": "광케이블(T_FTTH)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(B_가공)",
+        "korName": "광케이블(B_가공)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(B_지중)",
+    	"opened": 1,
+        "korName": "광케이블(B_지중)",
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(B_임차)",
+        "korName": "광케이블(B_임차)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "광케이블(B_FTTH)",
+        "korName": "광케이블(B_FTTH)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}, {
+    "layerTreePk": "관로",
+    "korName": "관로",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "관로(T_자가)",
+        "korName": "관로(T_자가)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "관로(B_자가)",
+        "korName": "관로(B_자가)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}, {
+    "layerTreePk": "접속함체",
+    "korName": "접속함체",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "접속함체(T_자가)",
+        "korName": "접속함체(T_자가)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "접속함체(B_자가)",
+        "korName": "접속함체(B_자가)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}, {
+    "layerTreePk": "맨홀",
+    "korName": "맨홀",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "맨홀(T_자가)",
+        "korName": "맨홀(T_자가)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "맨홀(B_자가)",
+        "korName": "맨홀(B_자가)",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}, {
+    "layerTreePk": "국소",
+    "korName": "국소",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "전송실",
+        "korName": "전송실",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "중심국/국사",
+        "korName": "중심국/국사",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "기지국",
+        "korName": "기지국",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "RT국소",
+        "korName": "RT국소",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}, {
+    "layerTreePk": "선로 경로정보",
+    "korName": "선로 경로정보",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "접속구간 직선경로",
+        "korName": "접속구간 직선경로",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "End-to-End 직선경로",
+        "korName": "End-to-End 직선경로",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "링 직선경로",
+        "korName": "링 직선경로",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}, {
+    "layerTreePk": "코아수용율",
+    "korName": "코아수용율",
+    "opened": 1,
+    "children" : [{
+        "layerTreePk": "80%이하",
+        "korName": "80%이하",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "80~90%이하",
+        "korName": "80~90%이하",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "90~99%이하",
+        "korName": "90~99%이하",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }, {
+        "layerTreePk": "100%",
+        "korName": "100%",
+    	"opened": 1,
+        "iconCls": "layer_polygon"
+    }]
+}]

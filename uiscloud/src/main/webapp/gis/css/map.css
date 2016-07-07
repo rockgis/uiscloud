@@ -1,0 +1,212 @@
+@CHARSET "UTF-8";
+
+/* 색인도 */
+#div_idx {
+	position:absolute;
+	width:204px;
+	height:274px;
+	right:0px;
+	bottom:0px;
+	border: solid 1px #cccccc;
+	background-color:#ffffff;
+	display:block;
+	padding:2px;
+	z-index:9998;
+	display:none;
+}
+#div_idx_title {
+	height: 20px;
+	text-align: center;
+	padding-top:3px;
+}
+#div_idx_title strong {
+	color : #777777;
+	font-size:14px;
+}
+#div_idx_map {
+	width:200px;
+	height:250px;
+	border: solid 1px #cccccc;
+	display:block;
+}
+#div_idx_hide {
+	position:absolute;
+	z-index:9999;
+}
+#div_idx_show {
+	position:absolute;
+	right:0px;
+	bottom:0px;
+	z-index:9999;
+	display:none;
+}
+
+/* 축척 레벨 바 */
+#tooltip {
+	background-image: url("/gis/images/mapsv/tooltip.png");
+	position:absolute;
+	right:47px;
+	top:100px;
+	z-index:9998;
+	width:59px;
+	height:22px;
+	text-align:center;
+	vertical-align: middle;
+	color: #ffffff;
+	display:none;
+}
+#tooltip span {
+	position:absolute;
+	top:3px;
+	left:10px;
+	z-index:9999;
+}
+
+/* OpenLayers Popup padding 을 5px 에서 0px 로 수정 */
+.olPopupContent {
+    padding:0px;
+    overflow: hidden;
+}
+/* 거리, 면적 측정 Style */
+div.olControlMeasurePopup {
+	text-align:center;
+	padding-top : 3px;
+	vertical-align: middle;
+	border: 1px solid #cccccc;
+	background: #ffffff;
+	color: #000000;
+	font:12px 굴림;
+	overflow : hidden;
+	height:20px;
+}
+
+/* 이동 팝업 내부 내용 창 */
+div.olControlMeasureContent {
+	vertical-align: middle;
+	border: 1px solid #cccccc;
+	background: rgba(255, 255, 255, 0.5);
+	color: #000000;
+	font:12px 굴림;
+	overflow : hidden;
+	width:150px;
+}
+
+div.measureClose {
+	position : absolute;
+	top:3px;
+	right:3px;
+}
+
+/* 팝업 내부 글자 색 (빨간색) */
+span.MeasureColorRed {
+	color: #000000;
+}
+
+/* 시작 창 */
+div.olControlMeasurePopupStart {
+	width:36px;
+}
+
+/*  구간 거리 */
+div.olControlMeasureContent div.measureDist {
+	padding:5px 10px 0px 10px;
+	font:12px 굴림;
+}
+/* 케이블 종류 */
+div.olControlMeasureContent div.cableTypeName {
+	font:12px 굴림;
+}
+/* 총 거리 */
+div.olControlMeasureContent div.MeasureAllDist {
+	font:12px 굴림;
+}
+div.olControlMeasureContent span.measureResTit {
+	display : inline-block;
+	width:50px;
+}
+div.olControlMeasureContent span.measureResCon {
+	color:#000000;
+	font:12px 굴림;
+}
+
+/* 면적 */
+div.olControlMeasureContent div.MeasureAllArea {
+	padding:5px 10px;
+	font:12px 굴림;
+}
+
+/* 측정 종료 설명 */
+div.olControlMeasureContent div.MeasureEndDescript {
+	background-color:#898989;
+	padding:5px 10px;
+	color:#ffffff;
+	font:12px 굴림;
+}
+
+/* 중간 측정 */
+div.olControlMeasurePopupDefault {
+	width:90px;
+}
+
+/* 거리 측정 완료 */
+div.olControlMeasurePopupEnd {
+	width:130px;
+}
+
+/* 면적 측정 완료 */
+div.olControlMeasurePopupEndPoly {
+	width:150px;
+}
+
+
+/*
+ * 인덱스 맵 스타일
+ */
+.olIndexMap {
+	position: absolute;
+	background-color : white;
+	right: 0px;
+	bottom: 16px;
+	width: 200px;
+	height: 152px;
+	z-index: 1001;
+	border : solid 1px #d4d8dd;
+	
+	-moz-border-radius: 4px; 
+	-webkit-border-radius: 4px; 
+	border-radius: 4px;
+}
+
+/*
+ * Handler Box 스타일
+ */
+.olHandlerBoxZoomBox {
+    border: 2px solid red;
+    position: absolute;
+    background-color: white;
+    opacity: 0.50;
+    font-size: 1px;
+    filter: alpha(opacity=50);
+}
+
+/* 사용자레이어 글상자 */
+.divDrawShowBox {
+	z-index: 9998;
+	line-height:1.2em;
+	background-color: #ffffff;
+	border: 1px #cccccc solid;
+	padding: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;
+	fontFamily : Dotum;
+	color : #000000;'
+	fontSize : 12px;
+}

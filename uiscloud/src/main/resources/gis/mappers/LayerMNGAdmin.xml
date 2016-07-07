@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+    SQL File Name : LayerMNGAdmin.xml
+    Description : 레이어정보 관리
+
+    Modification Information
+    수정일            수정자         Version         Query Id
+    2016.06.01   	이경찬        	1.0             최초생성
+--><!--Converted at: Tue May 20 09:43:10 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="layerMNGAdminDAO">
+    <!-- <parameterMap id="LayerMNGAdminVOParameter" type="LayerMNGAdminVO">
+        <result property="layerTreePk" column="layer_tree_pk"/>
+        <result property="korName" column="kor_name"/>
+        <result property="layerName" column="layer_name"/>
+        <result property="symbolizer" column="symbolizer"/>
+        <result property="tableName" column="table_name"/>
+        <result property="conditionField" column="condition_field"/>
+        <result property="condition" column="condition"/>
+        <result property="used" column="used"/>
+        <result property="parentPk" column="parent_pk"/>
+        <result property="treeOrder" column="tree_order"/>
+        <result property="treeDepth" column="tree_depth"/>
+        <result property="displayLevel" column="display_level"/>
+        <result property="opened" column="opened"/>
+        <result property="checked" column="checked"/>
+        <result property="searchRequiredFieldsType" column="search_required_fields_type"/>
+    </parameterMap> -->
+    
+    <select id="select" parameterType="LayerMNGAdminVO" resultType="LayerMNGAdminVO">
+		SELECT layer_tree_pk, kor_name, layer_name, symbolizer, table_name, 
+		       condition_field, condition, used, parent_pk, tree_order, tree_depth, 
+		       display_level, opened, checked, search_required_fields_type
+		FROM public.uiscloud_layer_tree
+    </select>
+        
+    <insert id="insert" parameterType="LayerMNGAdminVO">
+        INSERT INTO public.uiscloud_layer_tree(
+            layer_tree_pk, kor_name, layer_name, symbolizer, table_name, 
+            condition_field, condition, used, parent_pk, tree_order, tree_depth, 
+            display_level, opened, checked, search_required_fields_type)
+	    VALUES (
+	    		(select max(layer_tree_pk)+1 from uiscloud_layer_tree),
+				#{korName, jdbcType=VARCHAR},
+				#{layerName, jdbcType=VARCHAR},
+				#{symbolizer, jdbcType=VARCHAR},
+				#{tableName, jdbcType=VARCHAR}, 
+	            #{conditionField, jdbcType=VARCHAR},
+	            #{condition, jdbcType=VARCHAR},
+	            #{used, jdbcType=BOOLEAN},
+	            #{parentPk, jdbcType=INTEGER},
+	            #{treeOrder, jdbcType=INTEGER},
+	            #{treeDepth, jdbcType=INTEGER}, 
+	            #{displayLevel, jdbcType=INTEGER},
+	            #{opened, jdbcType=BOOLEAN},
+	            #{checked, jdbcType=BOOLEAN},
+	            #{searchRequiredFieldsType, jdbcType=INTEGER}
+	    )
+    </insert>
+    
+    <update id="update" parameterType="LayerMNGAdminVO">
+        UPDATE public.uiscloud_layer_tree SET
+   			kor_name=#{korName, jdbcType=VARCHAR},
+   			layer_name=#{layerName, jdbcType=VARCHAR},
+   			symbolizer=#{symbolizer, jdbcType=VARCHAR},
+   			table_name=#{tableName, jdbcType=VARCHAR},  
+       		condition_field=#{conditionField, jdbcType=VARCHAR},
+       		condition=#{condition, jdbcType=VARCHAR},
+       		used=#{used, jdbcType=BOOLEAN},
+       		parent_pk=#{parentPk, jdbcType=INTEGER},
+       		tree_order=#{treeOrder, jdbcType=INTEGER},
+       		tree_depth=#{treeDepth, jdbcType=INTEGER}, 
+       		display_level=#{displayLevel, jdbcType=INTEGER},
+       		opened=#{opened, jdbcType=BOOLEAN},
+       		checked=#{checked, jdbcType=BOOLEAN},
+       		search_required_fields_type=#{searchRequiredFieldsType, jdbcType=INTEGER}
+ 		WHERE 
+			layer_tree_pk=#{layerTreePk, jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="LayerMNGAdminVO">
+        DELETE FROM public.uiscloud_layer_tree
+ 		WHERE layer_tree_pk=#{layerTreePk, jdbcType=INTEGER}
+    </delete>
+    
+</mapper>

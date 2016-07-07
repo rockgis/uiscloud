@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue May 20 09:25:27 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="buildingDAO">    	
+	<!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 시도 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectSido" resultType="java.util.Map">
+		select 
+			  sido_cd as pnu
+			, name  
+		from gcmm_sido_gm
+		order by name
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 시군구 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectSggBySidoPnu" resultType="java.util.Map">
+		select 
+			  sgg_cd as pnu
+			, name
+		from gcmm_sgg_gm
+		where sgg_cd like #{pnu} || '%'
+		order by name
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 읍면동 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectEmdlBySggPnu" resultType="java.util.Map">	
+		select 
+			  lgl_cd as pnu
+			, name
+		from gcmm_lgld_gm
+		where umd_cd like #{pnu} || '%'
+		order by name
+	</select>
+    	
+    <!-- 
+        SQL File Name   : Common.xml
+        Description     : 주소 - 읍면동 검색
+            
+        Modification Information
+        수정일       수정자        Version         Query Id
+        2014.02.06   김종민        1.0             최초생성
+    -->
+	<select id="selectBuilding" resultType="java.util.Map">	
+		select 
+			gid, the_geom, bd_key, bd_code, bd_name, name_ciss, name_qms, 
+			name_ibqm, cellplan, bd_group, bd_type, cellplan0, floor_max, 
+			floor_ud, bd_height, material, bd_area, bd_elv_cnt, bd_xpos, 
+			bd_ypos, bd_sxpos, bd_sypos, bd_expos, bd_eypos, addr_sido, sigungu, 
+			addr_gu, road_code, addr_road, road_bon, road_bu, law_code, law_dong, 
+			law_li, adm_code, adm_dong, adm_li, jibun_bon, jibun_bu, aptn_dong, 
+			area_style, wide_type, reg_date, reg_user, date, "user", delete_yn, 
+			user0, ciss_code, qms_code, ibqm_code, code, loss_lte, loss_lte_a, 
+			bd_grade, bd_cnt, area_gubun, reg_gubun, reg_ip, reg_system, 
+			reg_time, "time", dup_flag, user1, confirm_yn, date0, time0, 
+			user_name, user_dept, user_nam0, user_dep0, user_nam1, user_dep1, 
+			skt_bonbu, ons_bonbu, rule, rnum, area_code, clust_code
+		from public.tcp_inbd_info
+		where law_code = #{pnu}
+		<if test="jibunBon != null and jibunBon != ''">
+		and jibun_bon = #{jibunBon}
+		</if>
+		
+		<if test="bdName != null and bdName != ''">
+		AND bd_name LIKE '%' || #{bdName} || '%'
+		</if>
+		
+		<if test="bdGroups != null and bdGroups != ''">
+		AND bd_group IN  
+			<foreach collection="bdGroups" item="item" separator="," close=")" open="(">
+			'${item}'
+			</foreach>
+		</if>
+		
+		<if test="bdTypes != null and bdTypes != ''">
+		AND bd_type IN  
+			<foreach collection="bdTypes" item="item" separator="," close=")" open="(">
+			'${item}'
+			</foreach>
+		</if>	
+ 		
+		<if test="floorMax != null and floorMax != ''">
+			<if test="floorMaxOverUnder == 'over'">
+				AND floor_max &gt;= CAST(coalesce(#{floorMax}, '0') AS integer)
+			</if>
+			<if test="floorMaxOverUnder == 'under'">
+				AND floor_max &lt;= CAST(coalesce(#{floorMax}, '0') AS integer)
+			</if>
+		</if>
+		
+		order by addr_sido, sigungu, law_dong, law_li, bd_name desc
+	</select>
+</mapper>

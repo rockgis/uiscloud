@@ -1,0 +1,169 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>이벤트의 리스너와 특성</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="styles/uiscloud.vendor.css">
+
+        <!-- bootswatch yeti theme -->
+        <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/yeti/bootstrap.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="styles/uiscloud.main.css">
+
+        <!-- OpenLayers -->
+        <link rel="stylesheet" href="http://openlayers.org/en/v3.4.0/css/ol.css" type="text/css">
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">OpenLayers 3 예제</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    
+        <!--[if lt IE 10]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container"> 
+        <br>
+                      
+
+            <h2>이벤트의 리스너와 특성</h2>
+
+            <p>이 예제는 ol.Object의 인스턴스 속성 작업과 리스터 함수를 등록하는 방법을 보여줍니다.</p>
+
+            <div style="margin-top: 5px;" class="alert alert-success">브라우저의 콘솔을 확인해주세요.</div>
+           
+            <h4 class="text-muted">Source code:</h4>
+            <pre><code id="code_text" class="javascript"></code></pre>
+
+            <div class="footer">
+                <p>&copy; Company 2016 UISCLOUD Co., Ltd</p>
+                <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Code samples for The Book of OpenLayers3</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/acanimal/thebookofopenlayers3" property="cc:attributionName" rel="cc:attributionURL">Antonio Santiago</a>. Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+            </div>
+
+        </div>
+
+        <script type="text/javascript" src="/webjars/proj4js/2.2.1/proj4.js"></script>
+        <script src="scripts/uiscloud.vendor.js"></script>
+        <script src="scripts/uiscloud.plugins.js"></script>
+        <!-- OpenLayers -->
+        <script src="http://openlayers.org/en/v3.4.0/build/ol-debug.js" type="text/javascript"></script>
+        <script src="tilegrid/vworldtilegrid.js"></script>
+        <script src="source/vworldmapssource.js"></script>
+
+
+
+        <script id="code">
+            // Create object setting properties
+            var obj = new ol.Object({
+                name: 'some value for property',
+                age: 32
+            });
+            obj.set('password', 123456);
+
+            // Print some info
+            console.log('I\'m an object with custom properties: ');
+            console.log(' > keys: ', obj.getKeys());
+            console.log(' > key/value: ', obj.getProperties());
+
+            // Register some listeners.
+            obj.on('beforepropertychange', function(evt) {
+                console.log('* Before property change event: ', evt.key);
+            });
+            obj.on('propertychange', function(evt) {
+                console.log('* Property change event: ', evt.key);
+            });
+
+            obj.on('change:name', function(evt) {
+                console.log('-> name changed to: ' + evt.target.get('name'));
+            });
+
+            obj.on('change:password', function(evt) {
+                console.log('-> password changed to: ' + evt.target.get('password'))
+            }); 
+
+            obj.once('change:age', function(evt) {
+                console.log('-> age changed to: ' + evt.target.get('age') + '. This will not be notified again.');
+            });
+
+            // Change some attributes
+            console.log('lets go to change the name property...');
+            obj.set('name', 'new name');
+
+            console.log('lets go to change the password property...');
+            obj.set('password', 000000);
+
+            console.log('lets go to change the age property...');
+            obj.set('age', 25);
+
+            console.log('lets go to change the age property again. Nothing must happen.');
+            obj.set('age', 35);
+
+            console.log('------------------------------------------------------------------------');
+
+            // Create two new instances
+            var john = new ol.Object({ 
+                name: 'John Smith'
+            });
+            var peter = new ol.Object({
+                name: 'Peter Smith'
+            }); 
+
+            // Define a binding for the 'age' property where john is always 
+            // 5 years greater than peter
+            var accessor = john.bindTo('age', peter);
+            accessor.transform(
+                function(sourceAge) {
+                    // Value from john to peter
+                    return sourceAge - 5;
+                },
+                function(targetAge) {
+                    // Value from peter to john
+                    return targetAge + 5;
+                }
+            );
+
+            // Make some changes
+            console.log('set john to 30...')
+            john.set('age', 30);
+            showAges();
+
+            console.log('set john to 40...')
+            john.set('age', 40);
+            showAges();
+
+            console.log('set peter to 40...')
+            peter.set('age', 40);
+            showAges();
+
+            function showAges() {
+                console.log('john(' + john.get('age') + ') - peter(' + peter.get('age') + ')');
+            }
+        </script>
+
+        <script>
+        	(function() {
+        		$('#code_text').text( $('#code').text() );
+            	hljs.initHighlightingOnLoad();
+        	})();
+        </script>
+
+    </body>
+</html>

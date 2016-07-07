@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon May 19 13:34:04 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bbsTailDAO">
+	<resultMap id="bbsTail" type="org.uiscloud.gis.bbsTail.service.BbsTailVO">
+		<result property="bbsTailId" column="CNT_ID"/>
+		<result property="content" column="CONTENT"/>
+		<result property="creator" column="CREATOR"/>
+		<result property="createDatetime" column="CREATE_DATETIME"/>
+		<result property="pwd" column="PWD"/>
+		<result property="bbsId" column="BBS_ID"/>
+	</resultMap>
+	
+	<insert id="insertBbsTail_S">
+		
+			INSERT INTO BBS_TAIL 
+				( 
+					CONTENT
+				  , CREATOR
+				  , BBS_ID
+				  , PWD )
+			VALUES ( 
+					#{content}
+				  , #{creator}
+				  , #{bbsId}
+				  , #{pwd} )
+		
+	</insert>
+	
+	<update id="updateBbsTail_S">
+	
+		UPDATE BBS_TAIL
+		SET CNT_ID=#{bbsTailId}
+			, CONTENT=#{content}
+		WHERE CNT_ID=#{bbsTailId}
+	
+	</update>
+	
+	<delete id="deleteBbsTail_S">
+	
+		DELETE 
+		FROM BBS_TAIL 
+		WHERE CNT_ID=#{bbsTailId}
+	
+	</delete>
+	
+	<select id="selectBbsTail_S" resultMap="bbsTail">
+	
+		SELECT
+			CNT_ID
+			, CONTENT
+			, CREATOR
+			, CREATE_DATETIME
+			, PWD
+			, BBS_ID
+		FROM BBS_TAIL
+		WHERE CNT_ID=#{bbsTailId}
+	
+	</select>
+	
+	<select id="selectBbsTailList_By_BBSID" resultMap="bbsTail">
+	
+		SELECT
+			CNT_ID
+			, CONTENT
+			, CREATOR
+			, CREATE_DATETIME
+			, PWD
+			, BBS_ID
+		FROM BBS_TAIL
+		WHERE BBS_ID=#{bbsId}
+		ORDER BY CREATE_DATETIME DESC
+	
+	</select>
+	
+	<select id="selectBbsTailList_D" parameterType="bbsTailSearchVO" resultType="egovMap">
+	SELECT * FROM (
+		SELECT A.*, ROWNUM RNUM FROM (
+			SELECT
+					  row_number() over() as ROWNUM
+					, CNT_ID
+					, CONTENT
+					, CREATOR
+					, CREATE_DATETIME
+			FROM BBS_TAIL
+			WHERE 1 = 1
+			<if test="searchCondition == 0">AND
+				CNT_ID = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 1">AND
+				CONTENT LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 2">AND
+				CREATOR LIKE '%' || #{searchKeyword} || '%'
+			</if>
+				ORDER BY 
+					CNT_ID DESC
+					
+		) A 
+		WHERE ROWNUM &lt;= #{lastIndex}
+	) B
+	WHERE RNUM &gt; #{firstIndex}
+
+	</select>	
+	<select id="selectBbsTailListTotCnt_S" parameterType="bbsTailSearchVO" resultType="int">
+		SELECT COUNT(*) totcnt
+		FROM BBS_TAIL
+		WHERE 1 = 1
+		<if test="searchCondition == 0">AND
+			CNT_ID = #{searchKeyword}
+		</if>
+		<if test="searchCondition == 1">AND
+			CONTENT LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 2">AND
+			CREATOR LIKE '%' || #{searchKeyword} || '%'
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon May 19 13:26:13 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberDAO">	
+	
+	<insert id="insertMember_S">	
+		INSERT INTO public.uiscloud_user 
+			( 
+				USER_ID
+			  , PWD
+			  , USER_NAME
+			  , ROLE_NAME
+			  , USER_REGION
+			  , USER_ROLE
+			  ,EMAIL)
+		VALUES (
+				#{userId}
+			  , #{pwd}
+			  , #{userName}
+			  , #{roleName}
+			  , #{userRegion}
+			  , #{userRole}
+			  ,#{email})	
+	</insert>
+	
+	<update id="updateMember_S">	
+		UPDATE public.uiscloud_user 
+		SET   status=#{status}
+		WHERE CNT_ID=#{cntId}	
+	</update>
+	
+	<delete id="deleteMember_S">	
+		DELETE FROM public.uiscloud_user 
+		WHERE CNT_ID=#{cntId}	
+	</delete>
+	
+	<select id="selectMember_S" resultType="MemberVO">	
+		SELECT
+			CNT_ID
+			,USER_ID
+			, PWD
+			, USER_NAME
+			, ROLE_NAME
+			, USER_REGION
+			, USER_ROLE
+			, EMAIL
+			, STATUS
+			, (select region_name from public.tbies_region where region_id = USER_REGION) as SUSER_REGION
+			, (select role_name from public.tbies_role where role_id = USER_ROLE)  as SUSER_ROLE
+		FROM public.uiscloud_user 
+		WHERE CNT_ID=#{cntId}	
+	</select>
+	
+	<select id="selectMember_i" resultType="int">	
+		SELECT
+			count(CNT_ID)
+		FROM public.uiscloud_user 
+		WHERE USER_ID=#{userId}	
+	</select>
+
+	
+	
+	<select id="selectMemberList_D" parameterType="MemberSearchVO" resultType="MemberVO">  	
+		SELECT 	TA.*
+		FROM	
+		( 	
+			SELECT  CNT_ID
+				    ,USER_ID
+					, PWD
+					, USER_NAME
+					, ROLE_NAME
+					, USER_REGION
+					, USER_ROLE
+					, EMAIL
+					, STATUS
+					, (select region_name from public.tbies_region where region_id = USER_REGION) as SUSER_REGION
+					, (select role_name from public.tbies_role where role_id = USER_ROLE)  as SUSER_ROLE
+			FROM public.uiscloud_user
+			WHERE 1 = 1					
+			ORDER BY SUSER_REGION DESC 
+		    OFFSET ((#{page} - 1) * #{rows})
+		) TA
+		ORDER BY STATUS
+		LIMIT #{fetchCount}
+		   
+				
+	</select>
+	
+		
+	<select id="selectMemberListTotCnt_S" resultType="int">
+			SELECT COUNT(*) totalCount
+			FROM public.uiscloud_user
+			WHERE 1 = 1
+	</select>
+	
+	
+	<select id="selectMemberPasswd" resultType="int">
+			SELECT count(CNT_ID) cnt
+			FROM public.uiscloud_user
+			WHERE USER_ID=#{userId}	
+			AND EMAIL=#{email}
+	</select>
+	
+	<select id="selectMemberCntId" resultType="int">
+			SELECT CNT_ID
+			FROM public.uiscloud_user
+			WHERE USER_ID=#{userId}	
+			AND EMAIL=#{email}
+	</select>
+	
+	<update id="updateMember_passS">	
+		UPDATE public.uiscloud_user 
+		SET   PWD=#{pwd}
+		WHERE CNT_ID=#{cntId}	
+	</update>
+		
+	
+</mapper>

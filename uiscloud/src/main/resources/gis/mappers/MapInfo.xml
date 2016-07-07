@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+    SQL File Name : MapInfo.xml
+    Description : 지도정보 관리
+
+    Modification Information
+    수정일            수정자         Version         Query Id
+    2014.01.28   	김종민        	1.0             최초생성
+    2014.02.04		김종민			1.1				시설물 검색을 고유관리번호 검색으로 변경
+--><!--Converted at: Tue May 20 09:43:10 KST 2014-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapInfoDAO">
+    <resultMap id="FacilityVOResult" type="FacilityVO">
+        <result property="unqMgno" column="unq_mgno"/>
+        <result property="name" column="fcts_nm"/>
+        <result property="lglCd" column="lgl_cd"/>
+    </resultMap>
+
+    <resultMap id="MapInfoVOResult" type="MapInfoVO">
+        <result property="gid" column="gid"/>
+        <result property="unqMgno" column="unq_mgno"/>
+        <result property="fctsNm" column="fcts_nm"/>
+        <result property="cnstMgno" column="cnst_mgno"/>
+        <result property="lglCd" column="lgl_cd"/>
+        <result property="addr" column="addr"/>
+        <result property="theGeom" column="the_geom"/>
+        <result property="layerName" column="layerName"/>
+    </resultMap>
+    
+	<sql id="whereCommon">			
+		WHERE 1 = 1
+		<if test="gisCode != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="gisCode" item="item">
+					<if test="item == 'null'">
+					OR gis_code is null
+					</if>
+					<if test="item != 'null'">
+					OR gis_code = '${item}'
+					</if>				
+				</foreach>
+			</trim>
+		</if>
+		<if test="fctsNm != null and fctsNm != ''">
+		AND lower(fcts_nm) LIKE '%' || lower(#{fctsNm}) || '%'
+		</if>
+		<if test="unqMgno != null and unqMgno != ''">
+		AND lower(unq_mgno) LIKE '%' || lower(#{unqMgno}) || '%'
+		</if>
+		<if test="cnstMgno != null and cnstMgno != ''">
+		AND lower(cnst_mgno) LIKE '%' || lower(#{cnstMgno}) || '%'
+		</if>
+		<if test="sysClf != null">
+			<trim prefix="AND (" prefixOverrides="OR" suffix=")">
+				<foreach collection="sysClf" item="item">
+					<if test="item == 'null'">
+					OR sys_clf is null
+					</if>
+					<if test="item != 'null'">
+					OR sys_clf = '${item}'
+					</if>				
+				</foreach>
+			</trim>
+		</if>
+		<if test="tableName == 'tl_scco_ctprvn_11000' and lglCd != null and lglCd != ''">
+		AND ta."CTPRVN_CD" = #{lglCd}
+		</if>
+		<if test="tableName == 'tl_scco_sig_11000' and lglCd != null and lglCd != ''">
+		AND ta."SIG_CD" = #{lglCd}
+		</if>
+		<if test="tableName == 'tl_scco_emd_11000' and lglCd != null and lglCd != ''">
+		AND ta.emd_cd = #{lglCd}
+		</if>
+	</sql>    
+        
+	<!-- 
+	쿼리명 : mapInfoDAO.selectUnqMgno
+	설명 : 고유관리번호 검색
+	작성자 : 김종민
+	최초작성일 : 2014.01.28
+	-->
+    <select id="selectUnqMgno" parameterType="SearchFacilityByUnqMgnoVO" resultMap="FacilityVOResult">
+		SELECT 
+			  unq_mgno 	/* 고유관리번호 */ 
+			, fcts_nm		/* 시설명 */
+			, lgl_cd		/* 법정동 코드 */
+		FROM ${tableName}
+		WHERE lower(unq_mgno) LIKE lower(#{unqMgno}) || '%'
+    </select>
+        
+	<!-- 
+	쿼리명 : mapInfoDAO.searchTotalCount
+	설명 : 지도정보 검색 기능
+	작성자 : 김종민
+	최초작성일 : 2014.02.10
+	-->
+    <select id="searchTotalCount" parameterType="MapInfoSearchVO" resultType="Integer">
+		SELECT count(*) AS totalCount
+		FROM ${tableName} AS ta
+		
+		<include refid="whereCommon" />
+    </select>
+        
+	<!-- 
+	쿼리명 : mapInfoDAO.search
+	설명 : 지도정보 검색 기능
+	작성자 : 김종민
+	최초작성일 : 2014.02.10
+	-->
+    <select id="search" parameterType="MapInfoSearchVO" resultMap="MapInfoVOResult">
+		SELECT TB.*
+		FROM
+		(
+			SELECT TA.*
+			FROM	
+			(    
+				/* 시설물 */
+				SELECT 
+					  ta.gid
+					, ta.unq_mgno
+					, COALESCE(ta.fcts_nm, '') AS fcts_nm
+					, ta.cnst_mgno
+					, ta.lgl_cd
+					, COALESCE(tb.addr, '') AS addr
+					, ta.the_geom
+					, layer_name AS layerName
+				FROM ${tableName} AS ta
+				JOIN area_temp_mst AS tb
+				ON ta.lgl_cd = tb.lgl_cd  
+				LEFT OUTER JOIN t_layer_tree AS tlt
+				ON ta.gis_code = tlt.condition	
+				
+				<include refid="whereCommon" />
+				
+				ORDER BY unq_mgno
+				LIMIT ((#{page} - 1) * #{rows}) + #{fetchCount}
+			) TA
+			ORDER BY unq_mgno DESC
+			LIMIT #{fetchCount}
+		) TB
+		ORDER BY unq_mgno
+    </select>
+    
+    <select id="searchSido" parameterType="MapInfoSearchVO" resultMap="MapInfoVOResult">
+		select 
+			  gid
+			, "CTPRVN_CD" 
+			, "CTP_ENG_NM" 
+			, "CTP_KOR_NM"
+			, the_geom
+		from 
+			tl_scco_ctprvn_11000
+		order by gid 
+			
+    </select>
+    
+    <select id="searchSig" parameterType="MapInfoSearchVO" resultMap="MapInfoVOResult">
+		select 
+			  gid
+			, "SIG_CD"
+			, "SIG_ENG_NM"
+			, "SIG_KOR_NM"
+			, the_geom
+		from 
+			tl_scco_sig_11000
+		where
+			"SIG_CD" = #{lglCd}
+		order by "SIG_KOR_NM"
+    </select>
+    
+    <select id="searchEmd" parameterType="MapInfoSearchVO" resultMap="MapInfoVOResult">
+		select 
+				  gid
+				, emd_cd
+				, emd_eng_nm
+				, emd_kor_nm
+				, the_geom
+			from 
+				tl_scco_emd_11000
+			where
+				emd_cd = #{lglCd}
+			order by emd_kor_nm	     
+    </select>
+    
+    <select id="selectSpatialMetaColumn" parameterType="String" resultType="spatialMetaInfoVO">
+		SELECT alias AS field, alias, title, width, halign, align, sortable, hidden
+		FROM T_COLUMN_INFO
+		<if test="value != null">
+			WHERE TABLE_NAME = #{value}
+		</if>
+		ORDER BY TABLE_NAME, SEQ
+	</select>
+	
+	<sql id="selectCommon">
+		GID AS gid, 
+		UNQ_MGNO AS unqMgno, 
+		FCTS_NM AS fctsNm, 
+		CNST_MGNO AS cnstMgno, 
+		(SELECT ADDR FROM AREA_TEMP_MST WHERE LGL_CD = T1.LGL_CD) AS lglNm,
+		(SELECT GIS_NAME FROM T_GISCODE_INFO WHERE GIS_CODE = T1.GIS_CODE) AS gisNm
+	</sql>
+	
+	<select id="searchForExcelCable" parameterType="MapInfoSearchVO" resultType="GotcCaVO">
+		SELECT
+			<include refid="selectCommon"/>,
+			
+			round(use_core_cnt / CASE WHEN core_cnt=0 THEN 1 ELSE core_cnt END * 100) || '%' as useCoreGrade,
+			 
+			COMP_LEN AS compLen,
+			CORE_CNT AS coreCnt,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf,
+			USE_CORE_CNT AS useCoreCnt
+		FROM GOTC_CA T1
+		<include refid="whereCommon"/>
+	</select>
+	
+	<select id="searchForExcelCableDuct" parameterType="MapInfoSearchVO" resultType="GotcCdVO">
+		SELECT
+			<include refid="selectCommon"/>,
+			COMP_LEN AS compLen,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '323' AND CODE = T1.DIG_MTHD) AS digMthd,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '322' AND CODE = T1.LQT_MT) AS lqtMt,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf
+		FROM GOTC_CD T1
+		<include refid="whereCommon"/>
+	</select>
+	
+	<select id="searchForExcelJoinPoint" parameterType="MapInfoSearchVO" resultType="GotcJpVO">
+		SELECT
+			<include refid="selectCommon"/>,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '491' AND CODE = T1.JP_CLF) AS jpClf,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf
+		FROM GOTC_JP T1
+		<include refid="whereCommon"/>
+	</select>
+	
+	<select id="searchForExcelManHole" parameterType="MapInfoSearchVO" resultType="GotcMhVO">
+		SELECT
+			<include refid="selectCommon"/>,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '201' AND CODE = T1.MH_STD) AS mhStd,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '101' AND CODE = REPLACE(T1.SYS_CLF, 'SK', 'SKT')) AS sysClf
+		FROM GOTC_MH T1
+		<include refid="whereCommon"/>
+	</select>
+	
+	<select id="searchForExcelTPO" parameterType="MapInfoSearchVO" resultType="GotcTpoVO">
+		SELECT
+			<include refid="selectCommon"/>,
+			ADDR AS addr,
+			(SELECT NAME FROM GSCOMC WHERE CD_TYPE = '302' AND CODE = T1.CLIENT_CD) AS clientCd
+		FROM GOTC_TPO T1
+		<include refid="whereCommon"/>
+	</select>	
+	
+    <select id="searchGids" parameterType="MapInfoSearchVO" resultType="Map">		    
+		/* 시설물 */
+			SELECT 
+				  ta.gid
+			FROM ${tableName} AS ta
+			JOIN area_temp_mst AS tb
+			ON ta.lgl_cd = tb.lgl_cd  
+		<include refid="whereCommon" />				
+    </select>
+    
+    <insert id="insertSpbdEntrc" parameterType="SpbdEntrcVO">
+        INSERT INTO tl_spbd_entrc_11000(
+            "BUL_MAN_NO", "ENTRC_SE", "ENT_MAN_NO", "EQB_MAN_SN", "OPERT_DE", 
+            "SIG_CD", the_geom)
+    	VALUES (
+    		#{bulManNo, jdbcType=INTEGER},
+			#{entrcSe, jdbcType=VARCHAR},
+			#{entManNo, jdbcType=INTEGER},
+			#{eqbManSn, jdbcType=INTEGER},
+			#{opertDe, jdbcType=VARCHAR},
+			#{sigCd, jdbcType=VARCHAR},
+			ST_Transform(ST_GEOMFROMTEXT(#{wkt}, 900913),5179)
+		)
+    </insert>
+    
+    <insert id="insertSpotCntc" parameterType="SpotCntcVO">
+        INSERT INTO tl_spot_cntc_11000(
+            "BSI_INT_SN", "CNT_DRC_LN", "CNT_DST_LN", "ENT_MAN_NO", 
+            "OPERT_DE", "OPE_MAN_ID", "RDS_MAN_NO", "RDS_SIG_CD", "SIG_CD", 
+            the_geom)
+	    VALUES (
+	    	#{bsiIntSn, jdbcType=INTEGER},
+			#{cntDrcLn, jdbcType=VARCHAR},
+			#{cntDstLn, jdbcType=VARCHAR},
+			#{entManNo, jdbcType=INTEGER},
+			#{opertDe, jdbcType=VARCHAR},
+			#{opeManId, jdbcType=VARCHAR},
+			#{rdsManNo, jdbcType=DOUBLE},
+			#{rdsSigCd, jdbcType=VARCHAR},
+			#{sigCd, jdbcType=VARCHAR},
+			ST_Transform(ST_GEOMFROMTEXT(#{wkt}, 900913),5179)
+		)
+    </insert>
+    
+    <insert id="insertSpbdBuld" parameterType="SpbdBuldVO">
+        INSERT INTO tl_spbd_buld_11000(
+            the_geom, bdtyp_cd, bd_mgt_sn, bsi_int_sn, bsi_zon_no, buld_mnnm, 
+            buld_nm, buld_nm_dc, buld_se_cd, buld_slno, bul_dpn_se, bul_eng_nm, 
+            bul_man_no, emd_cd, eqb_man_sn, gro_flo_co, li_cd, lnbr_mnnm, 
+            lnbr_slno, mntn_yn, mvmn_de, mvmn_resn, mvm_res_cd, ntfc_de, 
+            opert_de, pos_bul_nm, rds_man_no, rn_cd, sig_cd, und_flo_co)
+	    VALUES (
+	    	ST_Multi(ST_Transform(ST_GEOMFROMTEXT(#{wkt}, 900913),5179)),
+	    	#{bdtypCd, jdbcType=VARCHAR},
+			#{bdMgtSn, jdbcType=VARCHAR},
+			#{bsiIntSn, jdbcType=INTEGER},
+			#{bsiZonNo, jdbcType=VARCHAR},
+			#{buldMnnm, jdbcType=INTEGER},
+			#{buldNm, jdbcType=VARCHAR},
+			#{buldNmDc, jdbcType=VARCHAR},
+			#{buldSeCd, jdbcType=VARCHAR},
+			#{buidSlno, jdbcType=INTEGER},
+			#{bulDpnSe, jdbcType=VARCHAR},
+			#{bulEngNm, jdbcType=VARCHAR},
+			#{bulManNo, jdbcType=INTEGER},
+			#{emdCd, jdbcType=VARCHAR},
+			#{eqbManSn, jdbcType=INTEGER},
+			#{groFloCo, jdbcType=INTEGER},
+			#{liCd, jdbcType=VARCHAR},
+			#{lnbrMnnm, jdbcType=INTEGER},
+			#{lnbrSlno, jdbcType=INTEGER},
+			#{mntnYn, jdbcType=VARCHAR},
+			#{mvmnDe, jdbcType=VARCHAR},
+			#{mvmnResn, jdbcType=VARCHAR},
+			#{mvmResCd, jdbcType=VARCHAR},
+			#{ntfcDe, jdbcType=VARCHAR},
+			#{opertDe, jdbcType=VARCHAR},
+			#{posBulNm, jdbcType=VARCHAR},
+			#{rdsManNo, jdbcType=DOUBLE},
+			#{rnCd, jdbcType=VARCHAR},
+			#{sigCd, jdbcType=VARCHAR},
+			#{undFloCo, jdbcType=INTEGER}
+		)
+    </insert>
+    
+    <update id="updateSpbdEntrc" parameterType="SpbdEntrcVO">
+		UPDATE tl_spbd_entrc_11000 SET
+			"BUL_MAN_NO"=#{bulManNo, jdbcType=INTEGER},
+			"ENTRC_SE"=#{entrcSe, jdbcType=VARCHAR},
+			"ENT_MAN_NO"=#{entManNo, jdbcType=INTEGER},
+			"EQB_MAN_SN"=#{eqbManSn, jdbcType=INTEGER},
+		    "OPERT_DE"=#{opertDe, jdbcType=VARCHAR},
+		    "SIG_CD"=#{sigCd, jdbcType=VARCHAR},
+		    the_geom=ST_Transform(ST_GEOMFROMTEXT(#{wkt}, 900913),5179)
+		 WHERE gid = #{gid, jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateSpotCntc" parameterType="SpotCntcVO">
+		UPDATE tl_spot_cntc_11000 SET
+			"BSI_INT_SN"=#{bsiIntSn, jdbcType=INTEGER},
+			"CNT_DRC_LN"=#{cntDrcLn, jdbcType=VARCHAR},
+			"CNT_DST_LN"=#{cntDstLn, jdbcType=VARCHAR},
+			"ENT_MAN_NO"=#{entManNo, jdbcType=INTEGER},
+		    "OPERT_DE"=#{opertDe, jdbcType=VARCHAR},
+		    "OPE_MAN_ID"=#{opeManId, jdbcType=VARCHAR},
+		    "RDS_MAN_NO"=#{rdsManNo, jdbcType=DOUBLE},
+		    "RDS_SIG_CD"=#{rdsSigCd, jdbcType=VARCHAR},
+		    "SIG_CD"=#{sigCd, jdbcType=VARCHAR},
+		    the_geom=ST_Transform(ST_GEOMFROMTEXT(#{wkt}, 900913),5179)
+		WHERE gid = #{gid, jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateSpbdBuld" parameterType="SpbdBuldVO">
+		UPDATE tl_spbd_buld_11000 SET
+   			the_geom=ST_Multi(ST_Transform(ST_GEOMFROMTEXT(#{wkt}, 900913),5179)),
+   			bdtyp_cd=#{bdtypCd, jdbcType=VARCHAR},
+   			bd_mgt_sn=#{bdMgtSn, jdbcType=VARCHAR},
+   			bsi_int_sn=#{bsiIntSn, jdbcType=INTEGER},
+   			bsi_zon_no=#{bsiZonNo, jdbcType=VARCHAR},
+       		buld_mnnm=#{buldMnnm, jdbcType=INTEGER},
+       		buld_nm=#{buldNm, jdbcType=VARCHAR},
+       		buld_nm_dc=#{buldNmDc, jdbcType=VARCHAR},
+       		buld_se_cd=#{buldSeCd, jdbcType=VARCHAR},
+       		buld_slno=#{buidSlno, jdbcType=INTEGER},
+       		bul_dpn_se=#{bulDpnSe, jdbcType=VARCHAR},
+       		bul_eng_nm=#{bulEngNm, jdbcType=VARCHAR},
+       		bul_man_no=#{bulManNo, jdbcType=INTEGER},
+       		emd_cd=#{emdCd, jdbcType=VARCHAR},
+       		eqb_man_sn=#{eqbManSn, jdbcType=INTEGER},
+       		gro_flo_co=#{groFloCo, jdbcType=INTEGER},
+       		li_cd=#{liCd, jdbcType=VARCHAR},
+       		lnbr_mnnm=#{lnbrMnnm, jdbcType=INTEGER},
+       		lnbr_slno=#{lnbrSlno, jdbcType=INTEGER},
+       		mntn_yn=#{mntnYn, jdbcType=VARCHAR},
+       		mvmn_de=#{mvmnDe, jdbcType=VARCHAR},
+      		mvmn_resn=#{mvmnResn, jdbcType=VARCHAR},
+      		mvm_res_cd=#{mvmResCd, jdbcType=VARCHAR},
+      		ntfc_de=#{ntfcDe, jdbcType=VARCHAR},
+      		opert_de=#{opertDe, jdbcType=VARCHAR},
+      		pos_bul_nm=#{posBulNm, jdbcType=VARCHAR},
+      		rds_man_no=#{rdsManNo, jdbcType=DOUBLE},
+      		rn_cd=#{rnCd, jdbcType=VARCHAR},
+      		sig_cd=#{sigCd, jdbcType=VARCHAR},
+      		und_flo_co=#{undFloCo, jdbcType=INTEGER}
+ 		WHERE gid = #{gid, jdbcType=INTEGER}
+    </update>
+    
+    <delete id="deleteSpbdEntrc" parameterType="SpbdEntrcVO">
+		DELETE FROM tl_spbd_entrc_11000
+		WHERE gid = #{gid, jdbcType=INTEGER}
+    </delete>
+    
+    <delete id="deleteSpotCntc" parameterType="SpotCntcVO">
+		DELETE FROM tl_spot_cntc_11000
+		WHERE gid = #{gid, jdbcType=INTEGER}
+    </delete>
+    
+    <delete id="deleteSpbdBuld" parameterType="SpbdBuldVO">
+		DELETE FROM tl_spbd_buld_11000
+ 		WHERE gid = #{gid, jdbcType=INTEGER}
+    </delete>
+</mapper>
