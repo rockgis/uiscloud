@@ -85,6 +85,18 @@ public class MainController {
 		
 		return "/geolib/gisMainF";	
 	}
+	
+	
+	@RequestMapping({"/spark/main_n"})
+	public String sparkMain_n(final Model model, Authentication auth ,final HttpServletRequest request) {	
+		
+		logger.info("Welcome checkAuth! Authentication is {}.");
+		
+		model.addAttribute("auth", auth );
+		
+		
+		return "/spark/index";	
+	}
 
 /*
 	*//**

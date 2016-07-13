@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-	<title>UISCLOUD  Map</title>
+	<title>UISCLOUD  Service</title>
 	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">UISCLOUD Map Project</a>
+          <a class="navbar-brand" href="#">UISCLOUD Service Project</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
         
@@ -32,35 +32,37 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1>UISCLOUD Map Framework</h1>
-        <p>Open Layer 기반의 Map viewer & editer
+        <h1>UISCLOUD Service FrameWork</h1>
+        <p>
         </p>
-         <p><a class="btn btn-primary btn-lg" href="/gis/main_n" role="button">Start &raquo;</a></p>
+        <p><a class="btn btn-primary btn-lg" href="/spark/main_n"" role="button">Start &raquo;</a></p>
       </div>
     </div>
 
     <div class="container">
-      <!-- Example row of columns -->
+        <!-- Example row of columns -->
+        
       <div class="row">
+      
       <div class="col-md-4">
+          <h2>Open Layer 3.X 기반의 Map FrameWork </h2>
+          <p> Openlyers + PgRouting + Postgis </p>
+          <p><a class="btn btn-default" href="/gis/main_n" role="button">View Start &raquo;</a></p>
+       </div>
+       
+        <div class="col-md-4">
+          <h2>Network Routing </h2>
+          <p>pgrouting + Karios  </p>
+          <p><a class="btn btn-default" href="/gis/gisMainK" role="button">View Start &raquo;</a></p>
+        </div>
+        
+        <div class="col-md-4">
           <h2>Openalyer 3.X Example</h2>
           <p>Openlyers 3.X 기반의 예제 </p>
           <p><a class="btn btn-default" href="/geo_examples" role="button">View Example &raquo;</a></p>
         </div>
-      <div class="col-md-4">
-          <h2>KARIOS 기반의 라우팅 </h2>
-          <p> Openlyers + KARIOS  </p>
-          <p><a class="btn btn-default" href="/gis/gisMainK" role="button">View Start &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>PostGIS 기반의 라우팅</h2>
-          <p>Openlyers + POSTGIS + PGROUTING </p>
-          <p><a class="btn btn-default" href="/gis/gisMain" role="button">View Start &raquo;</a></p>
-        </div>
         
       </div>
-
-      <hr>
 
       <footer>
         <p>&copy; Company 2016 UISCLOUD Co., Ltd</p>
