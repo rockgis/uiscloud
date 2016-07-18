@@ -164,6 +164,14 @@
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>${org.springsecurity-version}</version>
 		</dependency>
+		
+		
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
+		<dependency>
+    		<groupId>org.springframework.data</groupId>
+    		<artifactId>spring-data-redis</artifactId>
+   		 	<version>1.7.2.RELEASE</version>
+		</dependency>
 
 		<!-- AspectJ -->
 		<dependency>
@@ -378,6 +386,14 @@
 		</dependency>
 		
 		
+		<!-- https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver -->
+		<dependency>
+    		<groupId>org.mongodb</groupId>
+    		<artifactId>mongo-java-driver</artifactId>
+    		<version>3.2.2</version>
+		</dependency>
+		
+		
 
 		<!--postgresql JDBC -->
 		<dependency>
@@ -392,10 +408,25 @@
 			<version>9.4-1206-jdbc42</version>
 		</dependency -->
 		
+		
 		<dependency>
 			<groupId>kairos</groupId>
 			<artifactId>kairosjdbc</artifactId>
 			<version>5.0</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+		<dependency>
+    		<groupId>redis.clients</groupId>
+    		<artifactId>jedis</artifactId>
+    		<version>2.8.1</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
+		<dependency>
+    		<groupId>javax.websocket</groupId>
+   			<artifactId>javax.websocket-api</artifactId>
+    		<version>1.1</version>
 		</dependency>
 
 		<dependency>

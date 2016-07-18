@@ -16,7 +16,7 @@
 <link href="/spark/css/bootstrap.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="spark//css/simple-sidebar.css" rel="stylesheet">
+<link href="/spark/css/simple-sidebar.css" rel="stylesheet">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -106,10 +106,6 @@ div.daum {
 <script src="/spark/js/spark/timeline-view.js"></script>
 <script src="/spark/js/ajaxSparkCall.js"></script>
 
-<script src="/webjars/jolokia.js/1.3.2/jolokia.js" type="text/javascript"></script>
-<script src="/webjars/jolokia.js/1.3.2/jolokia-simple.js" type="text/javascript"></script>
-<script src="/webjars/json2/20140204/json2.js" type="text/javascript"></script>
-<script src="/webjars/highcharts/4.2.3/highcharts.js" type="text/javascript"></script>
 
 </head>
 

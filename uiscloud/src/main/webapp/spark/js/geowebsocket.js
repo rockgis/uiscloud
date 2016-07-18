@@ -50,11 +50,11 @@ GeoWebsocket.prototype = {
 	initialize : function(listener) {
 		if (window.location.protocol == 'http:') {
 			var url = window.location.hostname + ":" + window.location.port;
-			this.connect('ws://' + url + '/demo', function(msg) {
+			this.connect('ws://' + url + '/websocket, function(msg) {
 				listener(msg);
 			});
 		} else {
-			this.connect('wss://' + window.location.host + '/demo');
+			this.connect('wss://' + window.location.host + '/websocket');
 		}
 	},
 
